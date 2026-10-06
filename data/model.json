@@ -1,0 +1,2809 @@
+{
+ "meta": {
+  "title": "Pass or perish: rate-gated selective regimes on the Hadean Earth",
+  "subtitle": "OR: What a 4.2 Ga LUCA tells us about the tempo of prebiotic selection",
+  "manuscript_version": "v5",
+  "generated": "2026-09-11T09:54:35Z",
+  "notes": "Machine-readable extraction of every sheet of the Pass-or-perish figure-data workbook (README, Vocabulary, Method_time_budgets, Fig1 to Fig8, Elements_considered, Pi_ratio, Measurement_gaps, References) plus prose definitions from manuscript_v5.md. Excel formulas in the workbook have been evaluated and stored as numbers. Wording is taken from the workbook and the manuscript wherever it exists. Conventions carried over from the workbook README: all times in seconds unless a field name says otherwise; Myr means million years; ranges are stored as separate low and high fields. Three fields are new to this model and are not in the workbook: scenarios.n_parallel_sites_low, scenarios.n_parallel_sites_high and scenarios.site_note (all Tier C, derived here from the reasoning text), measurement_gaps.linked_prediction (Tier C except for Gap 6, which the sheet itself ties to prediction 2), and references.tier (Tier C, assigned from the figures each source supports). Elements considered but not given a matrix row, with their reasons, are on the Elements_considered sheet of the workbook: tungsten and molybdenum and potassium are discussed in the text only, and cobalt, selenium, boron, zinc and copper are not carried, copper being kept as the control case for prediction 2. The elements array here holds the nine rows of the Figure 3 passage matrix. Verdict and ratio columns of Fig2, the cycle counts of Fig6, the component sums of Fig8 and the geometric mean block of Fig7 are live formulas in the workbook and are recomputed by the app from the stored inputs rather than stored as text.",
+  "model_additions": "This file extends the manuscript v5 dataset with the preservation rung S6 and its two gates (S6a ecosystem persistence, S6b rock-record preservation), an S6 grade and reason for every element, and per-scenario parallel-site counts. Everything new is tagged Tier C or carries its own tier and sources. S6 sits after S5 and does not consume the pre-LUCA budget: it is a filter on the evidence, not on life.",
+  "preservation_note": "S6 comes after S5 and does not consume the pre-LUCA budget. It is a filter on the evidence rather than on life. Nothing about S6 had to happen before LUCA existed. But S6 decides what we are allowed to see, so it decides which of the earlier rungs can ever be tested against a rock. Two gates have to be passed in order. First the lineage has to become a community, because LUCA was not alone and a single cell line in a single vessel leaves no measurable trace. Second, some product of that community has to be chemically inert enough, and physically protected enough, to survive four billion years of burial."
+ },
+ "tiers": [
+  {
+   "id": "A",
+   "label": "Tier A, real numbers",
+   "definition": "Real numbers. Lifetimes, rate constants and fluxes of chemical species in water and in the atmosphere, taken from measured kinetics or from published photochemical models. These can be checked against a source."
+  },
+  {
+   "id": "B",
+   "label": "Tier B, order of magnitude only",
+   "definition": "Order of magnitude only. The time needed to assemble a network, to fix a trait in a population, or for a whole scenario family to run. These exist only as ranges and are presented as ranges. They are explicit so that they can be argued with, not because they are precise."
+  },
+  {
+   "id": "C",
+   "label": "Tier C, derived for this model",
+   "definition": "Not a tier used in the manuscript or the workbook. It marks the few values that were derived for this interactive model rather than transcribed from a source: the number of parallel sites per scenario, the prediction each measurement gap is linked to where the sheet does not say, and the tier assigned to each reference. Every Tier C value carries its reasoning in the record itself."
+  }
+ ],
+ "speed_classes": [
+  {
+   "id": "class1",
+   "label": "Class 1, effectively instantaneous, from microseconds to hours",
+   "range_seconds_low": 1e-06,
+   "range_seconds_high": 3600.0,
+   "description": "These steps are fast because they are single chemical or physical events, and their rates are either measured or bounded by measurement. The important point about Class 1 is not that these steps are fast. It is that they are the steps the handoff criterion says are most at risk, and they are fast enough to beat destruction whenever the geometry is right."
+  },
+  {
+   "id": "class2",
+   "label": "Class 2, fast on human timescales, from days to thousands of years",
+   "range_seconds_low": 86400.0,
+   "range_seconds_high": 31560000000.0,
+   "description": "These are the accumulation steps, and they are slower than Class 1 because they depend on transport rather than on chemistry."
+  },
+  {
+   "id": "class3",
+   "label": "Class 3, genuinely slow, from a million years upwards",
+   "range_seconds_low": 31560000000000.0,
+   "range_seconds_high": null,
+   "description": "Only two things in the sequence appear to require geological time, and both sit at the top of the ladder: crossing the error threshold and establishing heritability, which is the S4 to S5 chokepoint, and fixing a trait or an enzyme family in a population, for which the standard working estimates land at 10^6 to 10^7 years."
+  }
+ ],
+ "vocabulary": [
+  {
+   "level": 1,
+   "name": "element held in a host phase",
+   "what_it_is": "An element held in a host phase",
+   "named_examples": [
+    "Fe in olivine",
+    "P in apatite",
+    "N as N2",
+    "C as CO2"
+   ],
+   "rungs_it_can_occupy": "S0",
+   "note": "The unit of selection does not change here."
+  },
+  {
+   "level": 2,
+   "name": "dissolved species with an oxidation state",
+   "what_it_is": "A dissolved species with an oxidation state",
+   "named_examples": [
+    "Fe2+",
+    "HS-",
+    "HPO4 2-",
+    "NH4+",
+    "NO2-",
+    "HCO3-"
+   ],
+   "rungs_it_can_occupy": "S0 to S1",
+   "note": "The unit of selection does not change here."
+  },
+  {
+   "level": 3,
+   "name": "mineral or inorganic cluster",
+   "what_it_is": "A mineral or an inorganic cluster",
+   "named_examples": [
+    "green rust",
+    "mackinawite FeS",
+    "[Fe4S4]",
+    "apatite"
+   ],
+   "rungs_it_can_occupy": "S1 to S3",
+   "note": "The unit of selection changes here: ion to cluster. At each of those three changes the loss clock resets, because the new object has a destruction route that has nothing to do with the destruction route of the old one."
+  },
+  {
+   "level": 4,
+   "name": "monomer",
+   "what_it_is": "A monomer",
+   "named_examples": [
+    "glycine",
+    "alanine",
+    "formate",
+    "acetate",
+    "ribose",
+    "adenine"
+   ],
+   "rungs_it_can_occupy": "S2 to S3",
+   "note": "The unit of selection does not change here."
+  },
+  {
+   "level": 5,
+   "name": "activated monomer",
+   "what_it_is": "An activated monomer",
+   "named_examples": [
+    "acetyl phosphate",
+    "thioacetate",
+    "aminoacyl adenylate"
+   ],
+   "rungs_it_can_occupy": "S4",
+   "note": "The unit of selection does not change here."
+  },
+  {
+   "level": 6,
+   "name": "oligomer",
+   "what_it_is": "An oligomer",
+   "named_examples": [
+    "alanine dipeptide",
+    "oligoglycine",
+    "short RNA"
+   ],
+   "rungs_it_can_occupy": "S4",
+   "note": "The unit of selection changes here: monomer to oligomer. At each of those three changes the loss clock resets, because the new object has a destruction route that has nothing to do with the destruction route of the old one."
+  },
+  {
+   "level": 7,
+   "name": "functional polymer",
+   "what_it_is": "A functional polymer",
+   "named_examples": [
+    "folded peptide",
+    "ribozyme"
+   ],
+   "rungs_it_can_occupy": "S4 to S5",
+   "note": "The unit of selection does not change here."
+  },
+  {
+   "level": 8,
+   "name": "coded polymer",
+   "what_it_is": "A coded polymer",
+   "named_examples": [
+    "protein made from a template"
+   ],
+   "rungs_it_can_occupy": "S5",
+   "note": "The unit of selection changes here: oligomer to coded polymer. At each of those three changes the loss clock resets, because the new object has a destruction route that has nothing to do with the destruction route of the old one."
+  }
+ ],
+ "rungs": [
+  {
+   "id": "S0",
+   "name": "availability and delivery",
+   "from_reservoir": "host rock or atmosphere",
+   "to_reservoir": "dissolved in water",
+   "mechanism": "weathering, degassing and mixing, so it needs a source and a transport route",
+   "loss_process": "nothing destroys it, but the supply can stop",
+   "unit_selected": "elements and ions",
+   "is_filter": true,
+   "description": "A filter. It changes what is present in a place without any copying, any inheritance or any competition between variants."
+  },
+  {
+   "id": "S1",
+   "name": "thermodynamic partitioning",
+   "from_reservoir": "one dissolved form",
+   "to_reservoir": "another dissolved form",
+   "mechanism": "redox and acid-base reaction, driven by free-energy differences",
+   "loss_process": "back reaction to the stable form",
+   "unit_selected": "speciation, minerals",
+   "is_filter": true,
+   "description": "A filter. It changes what is present in a place without any copying, any inheritance or any competition between variants."
+  },
+  {
+   "id": "S2",
+   "name": "kinetic persistence",
+   "from_reservoir": "a reactive species",
+   "to_reservoir": "the same species, still intact",
+   "mechanism": "no transport at all, it only has to wait, which needs a kinetic barrier",
+   "loss_process": "hydrolysis, photolysis, oxidation",
+   "unit_selected": "compounds that survive",
+   "is_filter": true,
+   "description": "A filter. It changes what is present in a place without any copying, any inheritance or any competition between variants."
+  },
+  {
+   "id": "S3",
+   "name": "accumulation and concentration",
+   "from_reservoir": "dilute solution",
+   "to_reservoir": "a surface, a pore or a film",
+   "mechanism": "adsorption, drying, thermophoresis, precipitation, so it needs a flux or a gradient",
+   "loss_process": "dilution back into the bulk",
+   "unit_selected": "local composition",
+   "is_filter": true,
+   "description": "A filter. A mineral surface that adsorbs one nucleotide and not another is filtering."
+  },
+  {
+   "id": "S4",
+   "name": "autocatalytic amplification",
+   "from_reservoir": "separate building blocks",
+   "to_reservoir": "one bonded assembly",
+   "mechanism": "condensation on a surface or in a mineral interlayer, feeding a self-amplifying network",
+   "loss_process": "hydrolysis of the new bond",
+   "unit_selected": "network motifs",
+   "is_filter": false,
+   "description": "Selection proper, in that it changes relative abundance through differential propagation. A ribozyme that copies itself faster than its neighbour is being selected."
+  },
+  {
+   "id": "S5",
+   "name": "Darwinian selection",
+   "from_reservoir": "one assembly",
+   "to_reservoir": "many copies of it",
+   "mechanism": "template copying, which needs heritable variation",
+   "loss_process": "copying error, and loss of the template",
+   "unit_selected": "genotypes, lineages",
+   "is_filter": false,
+   "description": "Selection proper, in that it changes relative abundance through differential propagation. Levels S4 and S5 are biology and are much harder to time."
+  },
+  {
+   "id": "S6",
+   "name": "Preservation",
+   "from_reservoir": "a single heritable lineage",
+   "to_reservoir": "a persistent ecosystem, and then a readable trace in rock",
+   "mechanism": "Recycling inside a community, then chemical inertness plus a protective mineral or macromolecular matrix",
+   "loss_process": "Community collapse and nutrient exhaustion; then hydrolysis, oxidation, thermal cracking, isotope exchange and recrystallisation during burial and metamorphism",
+   "unit_selected": "the refractory subset, which is not the functional subset",
+   "is_filter": true,
+   "does_it_consume_the_budget": false,
+   "description": "S6 comes after S5 and does not consume the pre-LUCA budget. It is a filter on the evidence rather than on life. Nothing about S6 had to happen before LUCA existed. But S6 decides what we are allowed to see, so it decides which of the earlier rungs can ever be tested against a rock. Two gates have to be passed in order. First the lineage has to become a community, because LUCA was not alone and a single cell line in a single vessel leaves no measurable trace. Second, some product of that community has to be chemically inert enough, and physically protected enough, to survive four billion years of burial."
+  }
+ ],
+ "regimes": [
+  {
+   "id": "R1",
+   "name": "Availability",
+   "conditions": "Post-accretionary, hot, high flux, anoxic",
+   "rungs_covered": "S0 to S3",
+   "unit_selected": "elements and ions",
+   "expected_legacy": "Fe-S and Ni chemistry, tungsten used before molybdenum",
+   "what_is_selected": "Selection acts on what is available and soluble. Availability is the filter.",
+   "duration_low_myr": 1,
+   "duration_high_myr": 50,
+   "why_that_long": "the setting has to appear",
+   "key_sources": [
+    "Dupont et al.",
+    "Moore et al.",
+    "Robbins et al.",
+    "Williams"
+   ]
+  },
+  {
+   "id": "R2",
+   "name": "Persistence",
+   "conditions": "Cooler, stabilised hydrosphere, still high ultraviolet",
+   "rungs_covered": "S2 to S3",
+   "unit_selected": "molecules",
+   "expected_legacy": "Photostable subset survives, the phosphate compromise, nitrogen stored or lost",
+   "what_is_selected": "Selection acts on survival of molecules. Persistence is the filter.",
+   "duration_low_myr": 0.001,
+   "duration_high_myr": 1,
+   "why_that_long": "the chemistry itself is fast",
+   "key_sources": [
+    "Cockell",
+    "Ranjan and Sasselov",
+    "Catling and Zahnle"
+   ]
+  },
+  {
+   "id": "R3",
+   "name": "Throughput",
+   "conditions": "Localised sustained gradients",
+   "rungs_covered": "S4",
+   "unit_selected": "networks",
+   "expected_legacy": "Wood-Ljungdahl style CO2 fixation, chemiosmotic coupling",
+   "what_is_selected": "Selection acts on whole reaction networks. Throughput is the filter.",
+   "duration_low_myr": 0.1,
+   "duration_high_myr": 10,
+   "why_that_long": "waiting for steps to coincide",
+   "key_sources": [
+    "Weiss et al. 2016",
+    "activating FeS(001)"
+   ]
+  },
+  {
+   "id": "R4",
+   "name": "Fidelity",
+   "conditions": "Heritable replicating lineages",
+   "rungs_covered": "S5",
+   "unit_selected": "genotypes",
+   "expected_legacy": "LUCA as a snapshot of R4, not of R1",
+   "what_is_selected": "Selection acts on inherited information. Fidelity is the filter, and this is the only regime that classical Darwinian selection describes.",
+   "duration_low_myr": 10,
+   "duration_high_myr": 100,
+   "why_that_long": "slow biology sets the floor",
+   "key_sources": [
+    "Moody et al. 2024",
+    "Gatenby et al. 2025"
+   ]
+  }
+ ],
+ "envelope_events": [
+  {
+   "label": "Accretion and magma ocean",
+   "age_old_ga": 4.57,
+   "age_young_ga": 4.4,
+   "drawn_as": "band",
+   "type": "planetary",
+   "note": "No liquid water surface. Sets the physical start of the envelope.",
+   "source": "Hazen et al., Hadean palaeomineralogy",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6315770/"
+  },
+  {
+   "label": "Moon-forming impact",
+   "age_old_ga": 4.36,
+   "age_young_ga": 4.36,
+   "drawn_as": "marker",
+   "type": "planetary",
+   "note": "Surface remelted and ocean vaporised. Any earlier chemistry is erased.",
+   "source": "Impact sterilisation modelling",
+   "source_url": "https://arxiv.org/pdf/2201.09349"
+  },
+  {
+   "label": "First evidence of liquid water",
+   "age_old_ga": 4.4,
+   "age_young_ga": 4.4,
+   "drawn_as": "marker",
+   "type": "planetary",
+   "note": "Single detrital zircon. One grain, so treated as a point, not a range.",
+   "source": "Hazen et al.; Krissansen-Totton et al.",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6315770/"
+  },
+  {
+   "label": "Earliest continuous habitability",
+   "age_old_ga": 4.34,
+   "age_young_ga": 3.4,
+   "drawn_as": "band",
+   "type": "planetary",
+   "note": "From about 4.34 Ga. The near end of the envelope is set here, by the planet rather than by biology.",
+   "source": "Abramov and Mojzsis; Boehnke and Harrison",
+   "source_url": "https://www.nature.com/articles/nature08015"
+  },
+  {
+   "label": "LUCA age estimate",
+   "age_old_ga": 4.33,
+   "age_young_ga": 4.09,
+   "drawn_as": "band",
+   "type": "biological",
+   "note": "Central value 4.2 Ga. This is the far end of the envelope.",
+   "source": "Moody et al. 2024",
+   "source_url": "https://www.nature.com/articles/s41559-024-02461-1"
+  },
+  {
+   "label": "Jack Hills zircon graphite",
+   "age_old_ga": 4.1,
+   "age_young_ga": 4.1,
+   "drawn_as": "marker",
+   "type": "contested",
+   "note": "Contested biosignature. Shown open to mark the dispute.",
+   "source": "Review of the earliest evidence for life",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12329462/"
+  },
+  {
+   "label": "Isua graphite and inclusions",
+   "age_old_ga": 3.8,
+   "age_young_ga": 3.7,
+   "drawn_as": "band",
+   "type": "contested",
+   "note": "Contested biosignature band.",
+   "source": "Review of the earliest evidence for life",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12329462/"
+  },
+  {
+   "label": "Available budget, LUCA at 4.2 Ga",
+   "age_old_ga": 4.4,
+   "age_young_ga": 4.2,
+   "drawn_as": "arrow",
+   "type": "derived",
+   "note": "About 200 Myr. This is the working budget of the paper.",
+   "source": "Derived, see Method_time_budgets",
+   "source_url": null
+  },
+  {
+   "label": "Budget if LUCA is 3.8 Ga",
+   "age_old_ga": 4.4,
+   "age_young_ga": 3.8,
+   "drawn_as": "arrow",
+   "type": "derived",
+   "note": "About 600 Myr. The conservative alternative.",
+   "source": "Derived, see Method_time_budgets",
+   "source_url": null
+  }
+ ],
+ "handoffs": [
+  {
+   "id": "H1",
+   "species_and_handoff": "Fe(II) to Fe-S cluster or sulfide",
+   "marker_category": "small molecule and ion",
+   "tau_transfer_low_s": 100,
+   "tau_transfer_high_s": 10000,
+   "tau_loss_low_s": 100000000000,
+   "tau_loss_high_s": 10000000000000,
+   "tier": "Tier A",
+   "speed_class": "Class 1",
+   "why_this_value": "Clusters self-assemble from Fe(II) and sulfide in seconds to minutes, and sulfides are geologically long-lived. The clearest pass on the plot.",
+   "key_sources": [
+    "Weiss et al. 2016",
+    "Dupont et al."
+   ],
+   "source_urls": [
+    "https://www.molevol.hhu.de/fileadmin/redaktion/Fakultaeten/Mathematisch-Naturwissenschaftliche_Fakultaet/Biologie/Institute/Molekulare_Evolution/Dokumente/Weiss_et_al_Nat_Microbiol_2016.pdf",
+    "https://www.whoi.edu/cms/files/Dupont_PNAS2006_34670.pdf"
+   ]
+  },
+  {
+   "id": "H2",
+   "species_and_handoff": "S(IV) to metal sulfide or thioester",
+   "marker_category": "small molecule and ion",
+   "tau_transfer_low_s": 1000,
+   "tau_transfer_high_s": 100000,
+   "tau_loss_low_s": 1000000,
+   "tau_loss_high_s": 100000000,
+   "tier": "Tier A",
+   "speed_class": "Class 1",
+   "why_this_value": "Sulfite is a globally accessible sulfur source in shallow water but is capped near 100 micromolar by photolysis.",
+   "key_sources": [
+    "Ranjan et al., sulfite constraints",
+    "Eos summary"
+   ],
+   "source_urls": [
+    "https://d197for5662m48.cloudfront.net/documents/publicationstatus/175469/preprint_pdf/4306d1109cfd69bdb40a7f2b0a58d8b3.pdf",
+    "https://eos.org/editor-highlights/new-constraints-on-sulfur-cycling-in-the-prebiotic-earth"
+   ]
+  },
+  {
+   "id": "H3",
+   "species_and_handoff": "HCN to ferrocyanide, cool and Fe-rich",
+   "marker_category": "small molecule and ion",
+   "tau_transfer_low_s": 1000,
+   "tau_transfer_high_s": 100000,
+   "tau_loss_low_s": 1000000,
+   "tau_loss_high_s": 100000000,
+   "tier": "Tier A",
+   "speed_class": "Class 1",
+   "why_this_value": "Storage reaction. Works best around pH 8 to 9. Converts a fragile species into a kinetically protected one.",
+   "key_sources": [
+    "Ferrocyanide formation",
+    "Toner and Catling"
+   ],
+   "source_urls": [
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC10875668/",
+    "https://faculty.washington.edu/dcatling/Toner2019_Alkaline_Lake_Cyanide_with_SI.pdf"
+   ]
+  },
+  {
+   "id": "H4",
+   "species_and_handoff": "HCN in a hot acidic pool",
+   "marker_category": "small molecule and ion",
+   "tau_transfer_low_s": 1000,
+   "tau_transfer_high_s": 100000,
+   "tau_loss_low_s": 100,
+   "tau_loss_high_s": 10000,
+   "tier": "Tier A",
+   "speed_class": "Class 1",
+   "why_this_value": "Same handoff time, but hydrolysis is far faster when hot and acidic. This is the same species failing under different conditions, which is the point of the figure.",
+   "key_sources": [
+    "Cyanide hydrolysis rate constants"
+   ],
+   "source_urls": [
+    "https://arxiv.org/pdf/2608.00025"
+   ]
+  },
+  {
+   "id": "H5",
+   "species_and_handoff": "NOx(-) to stored N in an Fe(II) ocean",
+   "marker_category": "small molecule and ion",
+   "tau_transfer_low_s": 10000,
+   "tau_transfer_high_s": 1000000,
+   "tau_loss_low_s": 100000,
+   "tau_loss_high_s": 10000000,
+   "tier": "Tier A",
+   "speed_class": "Class 2",
+   "why_this_value": "Marginal. Steady-state nitrite and nitrate stay below about one micromolar because ultraviolet light and dissolved iron remove them.",
+   "key_sources": [
+    "Ranjan et al., nitrogen oxides",
+    "mineral-catalysed NO and N2O formation"
+   ],
+   "source_urls": [
+    "http://arxiv.org/pdf/1902.07740",
+    "https://ntrs.nasa.gov/api/citations/20220017494/downloads/NatureGeo_Buessecker_accepted.pdf"
+   ]
+  },
+  {
+   "id": "H6",
+   "species_and_handoff": "Formaldehyde to sugars",
+   "marker_category": "small molecule and ion",
+   "tau_transfer_low_s": 10000,
+   "tau_transfer_high_s": 1000000,
+   "tau_loss_low_s": 10000,
+   "tau_loss_high_s": 1000000,
+   "tier": "Tier B",
+   "speed_class": "Class 2",
+   "why_this_value": "Sits on the diagonal. Outcome depends entirely on local conditions, so no general verdict is claimed.",
+   "key_sources": [
+    "Ranjan and Sasselov"
+   ],
+   "source_urls": [
+    "https://arxiv.org/abs/1610.06223"
+   ]
+  },
+  {
+   "id": "H7",
+   "species_and_handoff": "Free phosphate to an organic ester",
+   "marker_category": "small molecule and ion",
+   "tau_transfer_low_s": 1000000,
+   "tau_transfer_high_s": 100000000,
+   "tau_loss_low_s": 1000,
+   "tau_loss_high_s": 100000,
+   "tier": "Tier B",
+   "speed_class": "Class 3",
+   "why_this_value": "A clear fail in free solution. Phosphorylation is slow and free phosphate is removed quickly by calcium. This is why phosphorus is the hardest element at S0 and S1.",
+   "key_sources": [
+    "Pasek",
+    "Walton et al."
+   ],
+   "source_urls": [
+    "https://www.pnas.org/doi/10.1073/pnas.0708205105",
+    "https://reinhard.gatech.edu/uploads/5/4/1/0/54106417/walton_natgeo_2023.pdf"
+   ]
+  },
+  {
+   "id": "H8",
+   "species_and_handoff": "CO2 with no catalyst",
+   "marker_category": "carbon substrate",
+   "tau_transfer_low_s": 10000000000000,
+   "tau_transfer_high_s": 1000000000000000,
+   "tau_loss_low_s": 1000000000000,
+   "tau_loss_high_s": 100000000000000,
+   "tier": "Tier A",
+   "speed_class": "Class 3",
+   "why_this_value": "Fails the diagonal test, and in absolute terms the handoff needs 10^13 to 10^15 s, which is longer than the age of the Earth, so it is effectively never. Catalysis shortens tau_transfer by about twelve orders of magnitude, which is the arrow on the figure.",
+   "key_sources": [
+    "Electrochemical CO2 activation"
+   ],
+   "source_urls": [
+    "https://pubs.rsc.org/en/content/articlehtml/2020/cs/d0cs00835d"
+   ]
+  },
+  {
+   "id": "H9",
+   "species_and_handoff": "CO2 on an Fe or Ni sulfide surface",
+   "marker_category": "carbon substrate",
+   "tau_transfer_low_s": 10,
+   "tau_transfer_high_s": 1000,
+   "tau_loss_low_s": 1000000000000,
+   "tau_loss_high_s": 100000000000000,
+   "tier": "Tier A",
+   "speed_class": "Class 1",
+   "why_this_value": "The catalysis arrow on the figure. Adsorption and the first electron transfer take seconds or less once a suitable surface with sulfur vacancies exists. The barrier is the surface, not the reaction.",
+   "key_sources": [
+    "Activating FeS(001)",
+    "CO2 dissociation on Fe and Ni surfaces"
+   ],
+   "source_urls": [
+    "https://research-portal.uu.nl/en/publications/activating-the-fes-001-surface-for-cosub2sub-adsorption-and-reduc",
+    "https://discovery.ucl.ac.uk/id/eprint/10065207/7/Kwawu_CO2%2520Dissociation%2520Fe-Ni%2520paper%2520accepted%2520MS.pdf"
+   ]
+  },
+  {
+   "id": "H10",
+   "species_and_handoff": "RNA oligomer, free in warm water",
+   "marker_category": "polymer",
+   "tau_transfer_low_s": 1000,
+   "tau_transfer_high_s": 100000,
+   "tau_loss_low_s": 10000,
+   "tau_loss_high_s": 1000000,
+   "tier": "Tier B",
+   "speed_class": "Class 2",
+   "why_this_value": "Marginal in free solution. Hydrolysis competes directly with any further handoff.",
+   "key_sources": [
+    "Eiby 2025, chapters 2 and 3"
+   ],
+   "source_urls": []
+  },
+  {
+   "id": "H11",
+   "species_and_handoff": "RNA oligomer, bound to a mineral surface",
+   "marker_category": "polymer",
+   "tau_transfer_low_s": 1000,
+   "tau_transfer_high_s": 100000,
+   "tau_loss_low_s": 10000000000,
+   "tau_loss_high_s": 10000000000000,
+   "tier": "Tier B",
+   "speed_class": "Class 2",
+   "why_this_value": "The surface binding arrow. Binding decouples persistence from the hydrolysis rate that applies in free solution, buying up to million year scales.",
+   "key_sources": [
+    "Hazen",
+    "Eiby 2025",
+    "Jerome et al. 2022"
+   ],
+   "source_urls": [
+    "https://hazen.carnegiescience.edu/sites/default/files/187-Hazen-MSAPresAddress.pdf",
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC9233534/"
+   ]
+  },
+  {
+   "id": "H12",
+   "species_and_handoff": "Phosphate onto pumice or other volcanic glass",
+   "marker_category": "small molecule and ion",
+   "tau_transfer_low_s": 1000,
+   "tau_transfer_high_s": 10000,
+   "tau_loss_low_s": 100000000,
+   "tau_loss_high_s": 100000000000,
+   "tier": "Tier B",
+   "speed_class": "Class 1",
+   "why_this_value": "Added in this revision. Adsorption is fast and the substrate is long-lived, so it is one of the clearest passes on the plot, and it is a route around the phosphate problem in the row above.",
+   "key_sources": [
+    "Fetene and Addis",
+    "Brasier et al. 2011",
+    "Jerome et al. 2022"
+   ],
+   "source_urls": [
+    "https://journals.sagepub.com/doi/full/10.1177/1178622120969658",
+    "https://pubmed.ncbi.nlm.nih.gov/21879814/",
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC9233534/"
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "symbol": "H",
+   "name": "hydrogen",
+   "rungs": {
+    "S0": "e",
+    "S1": "e",
+    "S2": "e",
+    "S3": "m",
+    "S4": "e",
+    "S5": "e",
+    "S6": "h"
+   },
+   "hardest_rung": "gradient upkeep",
+   "why": "Maintained continuously by rock and water reaction, so supply is never the problem. The cost is keeping a gradient, not getting the atom.",
+   "notes": "Gate, the hardest rung: none. What failure looks like: not applicable. Where the material returns to: not applicable. Route through: Continuous supply from rock and water reaction.",
+   "source_urls": [
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC6315770/"
+   ],
+   "s6_why": "Tier C, new in this model: Hydrogen isotopes re-equilibrate with pore water and with metamorphic fluids, so no primary biological hydrogen signal survives from the Archean. The element that powers everything leaves the least trace.",
+   "s6_source_urls": []
+  },
+  {
+   "symbol": "O",
+   "name": "oxygen",
+   "rungs": {
+    "S0": "e",
+    "S1": "e",
+    "S2": "e",
+    "S3": "e",
+    "S4": "e",
+    "S5": "e",
+    "S6": "m"
+   },
+   "hardest_rung": "none",
+   "why": "Ubiquitous as water and as oxide surfaces. No rung is hard.",
+   "notes": "Gate, the hardest rung: none. What failure looks like: not applicable. Where the material returns to: not applicable. Route through: Ubiquitous as water and as oxide surfaces.",
+   "source_urls": [
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC5910859/"
+   ],
+   "s6_why": "Tier C, new in this model: Oxygen isotopes in silicates and carbonates do survive and are routinely measured, but they record temperature and water composition rather than biology, so the signal is preserved without being diagnostic.",
+   "s6_source_urls": []
+  },
+  {
+   "symbol": "C",
+   "name": "carbon",
+   "rungs": {
+    "S0": "e",
+    "S1": "e",
+    "S2": "e",
+    "S3": "e",
+    "S4": "h",
+    "S5": "m",
+    "S6": "e"
+   },
+   "hardest_rung": "S4 activation",
+   "why": "Abundant and stored as atmospheric CO2, but activation is the chokepoint. Strictly downstream of Fe and S, because it needs sulfide catalysis.",
+   "notes": "Gate, the hardest rung: S4 activation into networks. What failure looks like: no reaction without a catalyst. Where the material returns to: atmospheric CO2. Route through: Returns to the CO2 store. Fe, Ni and S sulfide catalysis opens the gate, so carbon is strictly downstream of iron, nickel and sulfur.",
+   "source_urls": [
+    "https://research-portal.uu.nl/en/publications/activating-the-fes-001-surface-for-cosub2sub-adsorption-and-reduc",
+    "https://discovery.ucl.ac.uk/id/eprint/10065207/7/Kwawu_CO2%2520Dissociation%2520Fe-Ni%2520paper%2520accepted%2520MS.pdf",
+    "https://pubs.rsc.org/en/content/articlehtml/2020/cs/d0cs00835d"
+   ],
+   "s6_why": "Tier C, new in this model: The best preserved of all. Graphite and kerogen are chemically inert and their carbon isotope ratios survive to at least 3.7 Ga, through peak metamorphic temperatures of 500 to 600 C at Isua. Carbon is the reason we have any pre-3.5 Ga evidence at all.",
+   "s6_source_urls": [
+    "https://www.nature.com/articles/s43247-025-02215-2",
+    "https://ajsonline.org/article/116058-the-carbon-isotopic-composition-of-archean-kerogen-and-its-resilience-through-the-rock-cycle.pdf"
+   ]
+  },
+  {
+   "symbol": "N",
+   "name": "nitrogen",
+   "rungs": {
+    "S0": "m",
+    "S1": "m",
+    "S2": "m",
+    "S3": "h",
+    "S4": "m",
+    "S5": "m",
+    "S6": "m"
+   },
+   "hardest_rung": "S3 accumulation",
+   "why": "Activation is instantaneous but prohibitively expensive, and the fast product is destroyed by ultraviolet light and dissolved iron. Accumulation is therefore the hard rung.",
+   "notes": "Gate, the hardest rung: S3 accumulation. What failure looks like: Fe(II) and ultraviolet light destroy fixed N. Where the material returns to: ferrocyanide, alkaline-lake cyanide, vent and crustal ammonium. Route through: Returns to a kinetically protected store, or it is lost outright. The storage step is what buys the time.",
+   "source_urls": [
+    "http://arxiv.org/pdf/1902.07740",
+    "https://ntrs.nasa.gov/api/citations/20220017494/downloads/NatureGeo_Buessecker_accepted.pdf",
+    "https://web.gps.caltech.edu/~yly/yly_mac/ReprintsYLY/N339Wong%202017%20NOx.pdf"
+   ],
+   "s6_why": "Tier C, new in this model: Nitrogen isotopes in kerogen are measurable in Archean rocks, but nitrogen is lost preferentially during thermal maturation and the remaining ratio drifts, so the primary value has to be reconstructed rather than read.",
+   "s6_source_urls": []
+  },
+  {
+   "symbol": "P",
+   "name": "phosphorus",
+   "rungs": {
+    "S0": "h",
+    "S1": "h",
+    "S2": "e",
+    "S3": "m",
+    "S4": "m",
+    "S5": "e",
+    "S6": "m"
+   },
+   "hardest_rung": "S0 and S1 availability",
+   "why": "Hard at the very first rungs. Free phosphate is scarce and is removed by calcium. Escape routes are alkaline calcium-poor waters, reduced phosphorus, and adsorption onto volcanic glass.",
+   "notes": "Gate, the hardest rung: S0 and S1 availability. What failure looks like: calcium phosphate takes it out of solution. Where the material returns to: calcium phosphate, adsorbed on volcanic glass. Route through: Escapes through alkaline carbonate-rich calcium-poor waters, reduced phosphorus, or adsorption onto pumice and other volcanic glass.",
+   "source_urls": [
+    "https://reinhard.gatech.edu/uploads/5/4/1/0/54106417/walton_natgeo_2023.pdf",
+    "https://www.pnas.org/doi/10.1073/pnas.0708205105",
+    "https://ui.adsabs.harvard.edu/abs/2020GGG....2108734K",
+    "https://journals.sagepub.com/doi/full/10.1177/1178622120969658"
+   ],
+   "s6_why": "Tier C, new in this model: Phosphorus survives as apatite, which is highly stable, but demonstrating that a given apatite is biological rather than diagenetic is very difficult, so the element is preserved while its biological attribution is not.",
+   "s6_source_urls": []
+  },
+  {
+   "symbol": "S",
+   "name": "sulfur",
+   "rungs": {
+    "S0": "e",
+    "S1": "e",
+    "S2": "m",
+    "S3": "m",
+    "S4": "e",
+    "S5": "e",
+    "S6": "e"
+   },
+   "hardest_rung": "S3 local accumulation",
+   "why": "Easy to supply and easy to use, but local accumulation is capped by photolysis of sulfite.",
+   "notes": "Gate, the hardest rung: S3 accumulation. What failure looks like: photolysis caps sulfite. Where the material returns to: metal sulfide. Route through: Returns to metal sulfide, then concentrates locally where sulfides precipitate.",
+   "source_urls": [
+    "https://d197for5662m48.cloudfront.net/documents/publicationstatus/175469/preprint_pdf/4306d1109cfd69bdb40a7f2b0a58d8b3.pdf",
+    "https://eos.org/editor-highlights/new-constraints-on-sulfur-cycling-in-the-prebiotic-earth"
+   ],
+   "s6_why": "Tier C, new in this model: Sulfide and sulfate sulfur isotopes, and in particular the multiple sulfur isotope signature, survive to 3.5 Ga and beyond and are among the strongest biosignatures we have. Sulfur passes the preservation rung nearly as well as carbon.",
+   "s6_source_urls": []
+  },
+  {
+   "symbol": "Fe",
+   "name": "iron",
+   "rungs": {
+    "S0": "e",
+    "S1": "e",
+    "S2": "e",
+    "S3": "e",
+    "S4": "e",
+    "S5": "e",
+    "S6": "e"
+   },
+   "hardest_rung": "none",
+   "why": "Soluble, abundant and redox-active in an anoxic ocean. No rung is hard, which is why the iron relay completes so easily.",
+   "notes": "Gate, the hardest rung: none. What failure looks like: not applicable. Where the material returns to: not applicable. Route through: Soluble, abundant and redox-active in an anoxic ocean.",
+   "source_urls": [
+    "https://www.whoi.edu/cms/files/Dupont_PNAS2006_34670.pdf",
+    "https://www.molevol.hhu.de/fileadmin/redaktion/Fakultaeten/Mathematisch-Naturwissenschaftliche_Fakultaet/Biologie/Institute/Molekulare_Evolution/Dokumente/Weiss_et_al_Nat_Microbiol_2016.pdf"
+   ],
+   "s6_why": "Tier C, new in this model: Iron is locked into oxides, sulfides and carbonates that survive indefinitely, and iron isotopes in banded iron formation are readable. Iron passes every rung including this one, which is why the iron relay is the easiest story to tell and the easiest to test.",
+   "s6_source_urls": []
+  },
+  {
+   "symbol": "Ni",
+   "name": "nickel",
+   "rungs": {
+    "S0": "m",
+    "S1": "e",
+    "S2": "e",
+    "S3": "h",
+    "S4": "e",
+    "S5": "e",
+    "S6": "m"
+   },
+   "hardest_rung": "S3 local accumulation",
+   "why": "Roughly three orders of magnitude scarcer than iron in seawater, so supply is tight but not blocked. The hard rung is local accumulation, and it is reached by the same sulfide chemistry that concentrates iron, which means nickel and iron pass or fail together. Its legacy is unusually specific: carbon monoxide dehydrogenase and acetyl-CoA synthase, [NiFe] hydrogenase and methyl-coenzyme M reductase all sit close to the root.",
+   "notes": "Gate, the hardest rung: S3 accumulation. What failure looks like: stays too dilute to reach a working concentration. Where the material returns to: iron-nickel sulfides and alloys. Route through: Concentrates only where iron and nickel sulfides form, so it passes on the same chemistry as iron and pays for the catalyst that opens the carbon gate. Status in this version: Carried, added in this revision. Scarce, so its hard rung is local accumulation rather than supply, but it is the element that pays for the catalyst that opens the carbon gate. Carbon monoxide dehydrogenase and acetyl-CoA synthase, [NiFe] hydrogenase and methyl-coenzyme M reductase are all nickel enzymes and all sit close to the root of the tree.",
+   "source_urls": [
+    "https://www.molevol.hhu.de/fileadmin/redaktion/Fakultaeten/Mathematisch-Naturwissenschaftliche_Fakultaet/Biologie/Institute/Molekulare_Evolution/Dokumente/Mrnjavac_et_al_ACS_2024.pdf",
+    "https://www.nature.com/articles/s43017-023-00477-y"
+   ],
+   "s6_why": "Tier C, new in this model: Nickel is retained in sediments and the nickel to iron ratio of Archean rocks is measurable and has been used to argue about methanogen abundance, but nickel has no isotopic biosignature that is clean enough to stand alone.",
+   "s6_source_urls": []
+  },
+  {
+   "symbol": "Mg",
+   "name": "magnesium",
+   "rungs": {
+    "S0": "e",
+    "S1": "e",
+    "S2": "e",
+    "S3": "e",
+    "S4": "h",
+    "S5": "m",
+    "S6": "h"
+   },
+   "hardest_rung": "S4, outcompeted by Fe(II)",
+   "why": "Availability was never the problem, since seawater has always been rich in magnesium. The problem is competition. Under strict anoxia Fe(II) is the better cofactor for ribozyme folding and catalysis, so it occupied the divalent cation seat first and magnesium took over only when rising oxygen removed soluble iron. Magnesium does not fail its passage, it is held at S4 by an element that arrived earlier.",
+   "notes": "Gate, the hardest rung: S4 activation into networks. What failure looks like: no failure of supply; the seat is simply already taken. Where the material returns to: not applicable, it stays dissolved. Route through: Always available, but Fe(II) held the folding and catalytic role first. Magnesium takes over when oxygen strips soluble iron out of the water. Status in this version: Carried, added in this revision. The clearest case of a substitution coupling. Never limiting in seawater, but held out of its modern folding and catalytic role because Fe(II) filled that role first under anoxia. Gives a dated prediction, the second half of prediction 2 in Section 11.2: the switch should track ocean oxygenation and not a lineage split.",
+   "source_urls": [
+    "https://williams.chemistry.gatech.edu/publications/LDW_123.pdf",
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC8747768/"
+   ],
+   "s6_why": "Tier C, new in this model: There is no preserved biological magnesium signal. Magnesium sits in carbonates and clays that exchange readily, so the substitution story between Fe(II) and Mg(2+) has to be argued from modern biochemistry and from laboratory ribozyme work rather than from rock.",
+   "s6_source_urls": []
+  }
+ ],
+ "couplings": [
+  {
+   "type": "Antagonism",
+   "elements": "Fe to N",
+   "what_it_does": "Fe(II) destroys fixed nitrogen. Iron is both catalyst and executioner: the same abundance that makes the iron relay easy is what removes nitrogen oxides from solution.",
+   "key_sources": [
+    "Mineral-catalysed NO and N2O formation",
+    "Ranjan et al."
+   ],
+   "source_urls": [
+    "https://ntrs.nasa.gov/api/citations/20220017494/downloads/NatureGeo_Buessecker_accepted.pdf",
+    "http://arxiv.org/pdf/1902.07740"
+   ]
+  },
+  {
+   "type": "Enablement",
+   "elements": "Fe and S to C",
+   "what_it_does": "Iron, nickel and sulfur catalysts unlock CO2. Carbon activation cannot precede iron and sulfur availability. Lightning interfacial electrochemistry does both jobs in one discharge.",
+   "key_sources": [
+    "Activating FeS(001)",
+    "lightning-induced electrochemistry"
+   ],
+   "source_urls": [
+    "https://research-portal.uu.nl/en/publications/activating-the-fes-001-surface-for-cosub2sub-adsorption-and-reduc",
+    "https://www.pnas.org/doi/10.1073/pnas.2400819121"
+   ]
+  },
+  {
+   "type": "Substitution",
+   "elements": "Fe(II) to Mg(2+)",
+   "what_it_does": "Fe(II) held the divalent cation seat that magnesium holds today. Under strict anoxia an L1 ligase ribozyme is about 25 times more active with Fe(II) than with Mg(II) at 100 micromolar, and a hammerhead ribozyme about 3.5 times more active at 25 micromolar. The handover tracks ocean oxygenation, not a biological innovation.",
+   "key_sources": [
+    "Fe(II) as the early divalent cation",
+    "magnesium in RNA folding"
+   ],
+   "source_urls": [
+    "https://williams.chemistry.gatech.edu/publications/LDW_123.pdf",
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC8747768/"
+   ]
+  },
+  {
+   "type": "Competition",
+   "elements": "P against Ca(2+)",
+   "what_it_does": "Phosphate competes with calcium, and with iron, for the same precipitation chemistry. Whichever wins decides whether phosphorus stays in solution.",
+   "key_sources": [
+    "Walton et al.",
+    "Pasek"
+   ],
+   "source_urls": [
+    "https://reinhard.gatech.edu/uploads/5/4/1/0/54106417/walton_natgeo_2023.pdf",
+    "https://www.pnas.org/doi/10.1073/pnas.0708205105"
+   ]
+  }
+ ],
+ "chains": [
+  {
+   "chain_name": "Fe and S",
+   "steps": [
+    {
+     "stage": "S0 availability",
+     "species": "Fe(II) in olivine, sulfide from mantle",
+     "what_happens": "Loss process that competes: no exposed fresh rock",
+     "rung": "S0",
+     "note": "Currency that pays the step: planetary gradient, weathering and mixing",
+     "source_urls": []
+    },
+    {
+     "stage": "S1 speciation",
+     "species": "Fe2+ and HS- dissolved",
+     "what_happens": "Loss process that competes: oxidation to Fe(III)",
+     "rung": "S1",
+     "note": "Currency that pays the step: no payment needed",
+     "source_urls": []
+    },
+    {
+     "stage": "S2 persistence",
+     "species": "stable under anoxia",
+     "what_happens": "Loss process that competes: none significant under anoxia",
+     "rung": "S2",
+     "note": "Currency that pays the step: no payment needed",
+     "source_urls": []
+    },
+    {
+     "stage": "S3 accumulation",
+     "species": "mackinawite and green rust",
+     "what_happens": "Loss process that competes: dilution in open ocean",
+     "rung": "S3",
+     "note": "Currency that pays the step: planetary gradient, drying, thermal, pH",
+     "source_urls": [
+      "https://onlinelibrary.wiley.com/doi/abs/10.1111/gbi.12572"
+     ]
+    },
+    {
+     "stage": "S4 activation",
+     "species": "[Fe4S4] cluster",
+     "what_happens": "Loss process that competes: cluster oxidation and aggregation",
+     "rung": "S4",
+     "note": "Currency that pays the step: redox couple, H2 with CO2 or structural Fe(II)",
+     "source_urls": []
+    },
+    {
+     "stage": "S5 heritable",
+     "species": "ferredoxin fold",
+     "what_happens": "Loss process that competes: peptide hydrolysis",
+     "rung": "S5",
+     "note": "Currency that pays the step: activated group, thioester or acyl phosphate",
+     "source_urls": []
+    }
+   ]
+  },
+  {
+   "chain_name": "P",
+   "steps": [
+    {
+     "stage": "S0 availability",
+     "species": "apatite in basalt",
+     "what_happens": "Loss process that competes: apatite too insoluble",
+     "rung": "S0",
+     "note": "Currency that pays the step: planetary gradient, weathering and mixing",
+     "source_urls": []
+    },
+    {
+     "stage": "S1 speciation",
+     "species": "HPO4 2- , micromolar",
+     "what_happens": "Loss process that competes: readsorption onto Fe oxides",
+     "rung": "S1",
+     "note": "Currency that pays the step: no payment needed",
+     "source_urls": []
+    },
+    {
+     "stage": "S2 persistence",
+     "species": "kinetically inert ester",
+     "what_happens": "Loss process that competes: none, the ester is inert",
+     "rung": "S2",
+     "note": "Currency that pays the step: no payment needed",
+     "source_urls": []
+    },
+    {
+     "stage": "S3 accumulation",
+     "species": "adsorbed on volcanic glass",
+     "what_happens": "Loss process that competes: dilution",
+     "rung": "S3",
+     "note": "Currency that pays the step: planetary gradient, drying, thermal, pH",
+     "source_urls": []
+    },
+    {
+     "stage": "S4 activation",
+     "species": "acetyl phosphate",
+     "what_happens": "Loss process that competes: hydrolysis of acetyl phosphate, minutes to hours",
+     "rung": "S4",
+     "note": "Currency that pays the step: redox couple, H2 with CO2 or structural Fe(II)",
+     "source_urls": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC6061221/"
+     ]
+    },
+    {
+     "stage": "S5 heritable",
+     "species": "phosphodiester backbone",
+     "what_happens": "Loss process that competes: backbone hydrolysis",
+     "rung": "S5",
+     "note": "Currency that pays the step: activated group, thioester or acyl phosphate",
+     "source_urls": []
+    }
+   ]
+  },
+  {
+   "chain_name": "N",
+   "steps": [
+    {
+     "stage": "S0 availability",
+     "species": "N2 in atmosphere",
+     "what_happens": "Loss process that competes: N2 triple bond, no route",
+     "rung": "S0",
+     "note": "Currency that pays the step: planetary gradient, weathering and mixing",
+     "source_urls": []
+    },
+    {
+     "stage": "S1 speciation",
+     "species": "NO and NO2- from lightning",
+     "what_happens": "Loss process that competes: ultraviolet photolysis of NOx in the sunlit layer",
+     "rung": "S1",
+     "note": "Currency that pays the step: no payment needed",
+     "source_urls": [
+      "https://web.gps.caltech.edu/~yly/yly_mac/ReprintsYLY/N339Wong%202017%20NOx.pdf"
+     ]
+    },
+    {
+     "stage": "S2 persistence",
+     "species": "nitrite is destroyed",
+     "what_happens": "Loss process that competes: reduction of NO2- to N2O by dissolved Fe(II)",
+     "rung": "S2",
+     "note": "Currency that pays the step: no payment needed",
+     "source_urls": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC6427828/"
+     ]
+    },
+    {
+     "stage": "S3 accumulation",
+     "species": "NH4+ held after reduction",
+     "what_happens": "Loss process that competes: outgassing of NH3 at high pH",
+     "rung": "S3",
+     "note": "Currency that pays the step: planetary gradient, drying, thermal, pH",
+     "source_urls": [
+      "https://pubs.acs.org/doi/10.1021/es950844w"
+     ]
+    },
+    {
+     "stage": "S4 activation",
+     "species": "glycine and alanine",
+     "what_happens": "Loss process that competes: no strong loss",
+     "rung": "S4",
+     "note": "Currency that pays the step: redox couple, H2 with CO2 or structural Fe(II)",
+     "source_urls": []
+    },
+    {
+     "stage": "S5 heritable",
+     "species": "peptide backbone",
+     "what_happens": "Loss process that competes: peptide hydrolysis",
+     "rung": "S5",
+     "note": "Currency that pays the step: activated group, thioester or acyl phosphate",
+     "source_urls": []
+    }
+   ]
+  },
+  {
+   "chain_name": "C",
+   "steps": [
+    {
+     "stage": "S0 availability",
+     "species": "CO2 in atmosphere",
+     "what_happens": "Loss process that competes: none, CO2 is abundant",
+     "rung": "S0",
+     "note": "Currency that pays the step: planetary gradient, weathering and mixing",
+     "source_urls": []
+    },
+    {
+     "stage": "S1 speciation",
+     "species": "dissolved CO2 and HCO3-",
+     "what_happens": "Loss process that competes: none",
+     "rung": "S1",
+     "note": "Currency that pays the step: no payment needed",
+     "source_urls": []
+    },
+    {
+     "stage": "S2 persistence",
+     "species": "too persistent",
+     "what_happens": "Loss process that competes: too persistent to react",
+     "rung": "S2",
+     "note": "Currency that pays the step: no payment needed",
+     "source_urls": []
+    },
+    {
+     "stage": "S3 accumulation",
+     "species": "adsorbed on sulfide",
+     "what_happens": "Loss process that competes: dilution",
+     "rung": "S3",
+     "note": "Currency that pays the step: planetary gradient, drying, thermal, pH",
+     "source_urls": []
+    },
+    {
+     "stage": "S4 activation",
+     "species": "formate, acetate, thioacetate",
+     "what_happens": "Loss process that competes: back reaction to CO2",
+     "rung": "S4",
+     "note": "Currency that pays the step: redox couple, H2 with CO2 or structural Fe(II)",
+     "source_urls": [
+      "https://research-portal.uu.nl/en/publications/activating-the-fes-001-surface-for-cosub2sub-adsorption-and-reduc"
+     ]
+    },
+    {
+     "stage": "S5 heritable",
+     "species": "Wood-Ljungdahl core",
+     "what_happens": "Loss process that competes: loss of the catalytic metal centre",
+     "rung": "S5",
+     "note": "Currency that pays the step: activated group, thioester or acyl phosphate",
+     "source_urls": []
+    }
+   ]
+  },
+  {
+   "chain_name": "Mg",
+   "steps": [
+    {
+     "stage": "S0 availability",
+     "species": "olivine and brucite",
+     "what_happens": "Loss process that competes: none",
+     "rung": "S0",
+     "note": "Currency that pays the step: planetary gradient, weathering and mixing",
+     "source_urls": []
+    },
+    {
+     "stage": "S1 speciation",
+     "species": "Mg2+ , never limiting",
+     "what_happens": "Loss process that competes: none",
+     "rung": "S1",
+     "note": "Currency that pays the step: no payment needed",
+     "source_urls": []
+    },
+    {
+     "stage": "S2 persistence",
+     "species": "no loss route",
+     "what_happens": "Loss process that competes: none",
+     "rung": "S2",
+     "note": "Currency that pays the step: no payment needed",
+     "source_urls": []
+    },
+    {
+     "stage": "S3 accumulation",
+     "species": "already abundant",
+     "what_happens": "Loss process that competes: none",
+     "rung": "S3",
+     "note": "Currency that pays the step: planetary gradient, drying, thermal, pH",
+     "source_urls": []
+    },
+    {
+     "stage": "S4 activation",
+     "species": "folding cation, after Fe(II) leaves",
+     "what_happens": "Loss process that competes: competition from Fe(II) while the ocean is anoxic",
+     "rung": "S4",
+     "note": "Currency that pays the step: redox couple, H2 with CO2 or structural Fe(II)",
+     "source_urls": []
+    },
+    {
+     "stage": "S5 heritable",
+     "species": "ribosome Mg dependence",
+     "what_happens": "Loss process that competes: none",
+     "rung": "S5",
+     "note": "Currency that pays the step: activated group, thioester or acyl phosphate",
+     "source_urls": []
+    }
+   ]
+  }
+ ],
+ "cycles": [
+  {
+   "name": "Wet and dry",
+   "hadean_period_s_low": 100000,
+   "hadean_period_s_high": 100000,
+   "today_period_s": 100000,
+   "rungs_served": "S3, and S2 to S4",
+   "note": "Little change in period, but more numerous and shorter-lived pools. One full drying and rewetting event is one polymerisation opportunity and takes hours.",
+   "source_urls": [
+    "https://pubmed.ncbi.nlm.nih.gov/27472365/",
+    "https://www.pnas.org/doi/10.1073/pnas.2412784121"
+   ]
+  },
+  {
+   "name": "Day and night",
+   "hadean_period_s_low": 22000,
+   "hadean_period_s_high": 61000,
+   "today_period_s": 86400,
+   "rungs_served": "S2 and S3",
+   "note": "About 6 to 17 hours in the Hadean. The fastest predictable cycle available, which is why Gatenby et al. put it at the centre of early information.",
+   "source_urls": [
+    "https://www.pnas.org/doi/10.1073/pnas.2117146119",
+    "https://doi.org/10.3390/life15020234"
+   ]
+  },
+  {
+   "name": "Hot and cold, local",
+   "hadean_period_s_low": 1000,
+   "hadean_period_s_high": 1000,
+   "today_period_s": 1000,
+   "rungs_served": "S4 to S5",
+   "note": "Set by local mixing rather than by planetary rotation, so it does not change between today and the Hadean.",
+   "source_urls": [
+    "https://www.pnas.org/doi/pdf/10.1073/pnas.0609592104",
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC10990939/"
+   ]
+  },
+  {
+   "name": "Tides",
+   "hadean_period_s_low": 7000,
+   "hadean_period_s_high": 20000,
+   "today_period_s": 45000,
+   "rungs_served": "S3",
+   "note": "The Moon was much closer, so the period was shorter and the amplitude far larger. Tidal modulation also reaches deep vent flow, which is why dark settings are not excluded from the predictable cycling argument.",
+   "source_urls": [
+    "https://arxiv.org/pdf/2304.04866"
+   ]
+  },
+  {
+   "name": "pH and redox at interfaces",
+   "hadean_period_s_low": 10000,
+   "hadean_period_s_high": 10000,
+   "today_period_s": 100,
+   "rungs_served": "S1 and S4",
+   "note": "Continuous rather than periodic, so it is drawn as a band. Range given as low and high rather than a single period.",
+   "source_urls": [
+    "https://onlinelibrary.wiley.com/doi/abs/10.1111/gbi.12572",
+    "https://hazen.carnegiescience.edu/sites/default/files/187-Hazen-MSAPresAddress.pdf"
+   ]
+  },
+  {
+   "name": "Raft transit and beaching",
+   "hadean_period_s_low": 63000000,
+   "hadean_period_s_high": 63000000,
+   "today_period_s": 2600000,
+   "rungs_served": "S1 to S3",
+   "note": "Months to about two years per clast. A raft crosses thousands of kilometres in 7 to 8 months and stays afloat about 20 months, delivering a sequence of settings to the same parcel of material.",
+   "source_urls": [
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC3399893/",
+    "https://pubmed.ncbi.nlm.nih.gov/21879814/"
+   ]
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "SC1",
+   "name": "Alkaline hydrothermal vent",
+   "plotted_low_myr": 1,
+   "plotted_high_myr": 50,
+   "t1_low": 0.01,
+   "t1_high": 0.5,
+   "t2_low": 0.0001,
+   "t2_high": 0.001,
+   "t3_low": 0.05,
+   "t3_high": 40,
+   "t4_low": 1,
+   "t4_high": 10,
+   "dominant_term": "T3 coincidence and T4 Class 3",
+   "reasoning": "The setting exists as soon as there is an ocean and recurs constantly, so T1 is tiny. The total is essentially the 1 to 10 Myr of Class 3 plus a coincidence term. Comfortable fit.",
+   "requires_subaerial_land": false,
+   "is_cold": false,
+   "n_parallel_sites_low": 1000.0,
+   "n_parallel_sites_high": 1000000.0,
+   "site_note": "Tier C, derived for this model: not a workbook value and new to the model. Order of magnitude count of independent parallel vessels or attempts, read off the reasoning text for this row and the T3 definition on the Method_time_budgets sheet, where T3 is the number of independent attempts needed divided by the rate at which independent attempts are generated. Here a vent field is of order 10^3 to 10^6 independent mixing interfaces, since the sheet says these settings come in enormous numbers and recur constantly, and each chimney holds many separate pores a few micrometres apart."
+  },
+  {
+   "id": "SC2",
+   "name": "Subaerial wet and dry pools",
+   "plotted_low_myr": 10,
+   "plotted_high_myr": 200,
+   "t1_low": 5,
+   "t1_high": 100,
+   "t2_low": 0.0002,
+   "t2_high": 0.002,
+   "t3_low": 1,
+   "t3_high": 80,
+   "t4_low": 1,
+   "t4_high": 10,
+   "dominant_term": "T1 setting availability",
+   "reasoning": "Requires land above sea level in the Hadean, which is contested. The fit therefore depends on a geological question, not a chemical one. Fits, but with little room to spare.",
+   "requires_subaerial_land": true,
+   "is_cold": false,
+   "n_parallel_sites_low": 1.0,
+   "n_parallel_sites_high": 1000.0,
+   "site_note": "Tier C, derived for this model: not a workbook value and new to the model. Order of magnitude count of independent parallel vessels or attempts, read off the reasoning text for this row and the T3 definition on the Method_time_budgets sheet, where T3 is the number of independent attempts needed divided by the rate at which independent attempts are generated. Here a subaerial pond is of order 1 to 10^3 vessels, since the Method_time_budgets sheet says a pond is one vessel and the amount of Hadean land above sea level is contested, so only a small number of pool fields can be assumed."
+  },
+  {
+   "id": "SC3",
+   "name": "Impact-generated hydrothermal system",
+   "plotted_low_myr": 1,
+   "plotted_high_myr": 20,
+   "t1_low": 0.01,
+   "t1_high": 1,
+   "t2_low": 0.0001,
+   "t2_high": 0.001,
+   "t3_low": 0.05,
+   "t3_high": 9,
+   "t4_low": 1,
+   "t4_high": 10,
+   "dominant_term": "T4 Class 3",
+   "reasoning": "Impacts were frequent and each system runs for of order 10^5 years, so both T1 and T3 are small. The fastest of the classical settings.",
+   "requires_subaerial_land": false,
+   "is_cold": false,
+   "n_parallel_sites_low": 100.0,
+   "n_parallel_sites_high": 100000.0,
+   "site_note": "Tier C, derived for this model: not a workbook value and new to the model. Order of magnitude count of independent parallel vessels or attempts, read off the reasoning text for this row and the T3 definition on the Method_time_budgets sheet, where T3 is the number of independent attempts needed divided by the rate at which independent attempts are generated. Here of order 10^2 to 10^5 sites, taken from the sheet's statement that impacts were frequent and each system runs for of order 10^5 years, so several hydrothermal fields with many pores each are live at any time."
+  },
+  {
+   "id": "SC4",
+   "name": "Pumice raft and tidal beaching",
+   "plotted_low_myr": 1,
+   "plotted_high_myr": 30,
+   "t1_low": 0.01,
+   "t1_high": 0.5,
+   "t2_low": 0.0001,
+   "t2_high": 0.002,
+   "t3_low": 0.02,
+   "t3_high": 20,
+   "t4_low": 1,
+   "t4_high": 10,
+   "dominant_term": "eruption frequency, then T4",
+   "reasoning": "T3 collapses because an eruption supplies of order 10^12 independent clasts rather than one pond, and the sequence of settings is delivered to the material. The required duration is set by how often suitable eruptions happened.",
+   "requires_subaerial_land": false,
+   "is_cold": false,
+   "n_parallel_sites_low": 1000000000000.0,
+   "n_parallel_sites_high": 1000000000000.0,
+   "site_note": "Tier C, derived for this model: not a workbook value and new to the model. Order of magnitude count of independent parallel vessels or attempts, read off the reasoning text for this row and the T3 definition on the Method_time_budgets sheet, where T3 is the number of independent attempts needed divided by the rate at which independent attempts are generated. Here of order 10^12 clasts per eruption, which the Fig8 and Method_time_budgets sheets state explicitly, and which is why T3 collapses for this family."
+  },
+  {
+   "id": "SC5",
+   "name": "Icy or eutectic concentration",
+   "plotted_low_myr": 50,
+   "plotted_high_myr": 500,
+   "t1_low": 10,
+   "t1_high": 100,
+   "t2_low": 1,
+   "t2_high": 50,
+   "t3_low": 30,
+   "t3_high": 350,
+   "t4_low": 1,
+   "t4_high": 10,
+   "dominant_term": "T1 and T2 both grow",
+   "reasoning": "Sustained freezing is hard to arrange on a hot young planet, and low temperature slows every rate constant, so the chemistry itself starts to cost real time. Needs the longer budget.",
+   "requires_subaerial_land": false,
+   "is_cold": true,
+   "n_parallel_sites_low": 1.0,
+   "n_parallel_sites_high": 1000.0,
+   "site_note": "Tier C, derived for this model: not a workbook value and new to the model. Order of magnitude count of independent parallel vessels or attempts, read off the reasoning text for this row and the T3 definition on the Method_time_budgets sheet, where T3 is the number of independent attempts needed divided by the rate at which independent attempts are generated. Here of order 1 to 10^3 brine pockets, a pond-like count, because sustained freezing is hard to arrange on a hot young planet so only a few such settings exist at once."
+  },
+  {
+   "id": "SC6",
+   "name": "Panspermia-assisted delivery",
+   "plotted_low_myr": 100,
+   "plotted_high_myr": 1000,
+   "t1_low": 10,
+   "t1_high": 100,
+   "t2_low": 1,
+   "t2_high": 50,
+   "t3_low": 85,
+   "t3_high": 840,
+   "t4_low": 1,
+   "t4_high": 10,
+   "dominant_term": "relocated origin plus transfer",
+   "reasoning": "Pays a full origin sequence on a host body, then adds host habitability onset, an ejecting impact, transit, and arrival and establishment. Only a small fraction of ejecta arrives viable, so many delivery attempts are needed and T3 rises steeply. Strictly larger than the best terrestrial case.",
+   "requires_subaerial_land": false,
+   "is_cold": false,
+   "n_parallel_sites_low": 1.0,
+   "n_parallel_sites_high": 100.0,
+   "site_note": "Tier C, derived for this model: not a workbook value and new to the model. Order of magnitude count of independent parallel vessels or attempts, read off the reasoning text for this row and the T3 definition on the Method_time_budgets sheet, where T3 is the number of independent attempts needed divided by the rate at which independent attempts are generated. Here of order 1 to 10^2 delivery attempts that matter, because only a small fraction of ejecta arrives viable, so the effective number of independent parallel sites at the receiving end is small even though the ejecta count is large."
+  }
+ ],
+ "audit_method": {
+  "terms": [
+   {
+    "id": "T1",
+    "name": "Setting availability and recurrence",
+    "what_it_measures": "How long you must wait for the physical setting to exist, and how often it comes back if a single instance is destroyed.",
+    "how_estimated": "Vents and impact-driven systems are available essentially as soon as there is an ocean, so T1 is small. Subaerial pools need land above sea level, which is genuinely contested for the Hadean, so T1 is large. Cold eutectic settings need sustained freezing on a planet with a hot interior and a faint young Sun, so T1 is large.",
+    "tier": "Tier B"
+   },
+   {
+    "id": "T2",
+    "name": "Chemistry, Class 1 and Class 2 steps",
+    "what_it_measures": "The actual reaction and transport time, once the setting exists.",
+    "how_estimated": "Class 1 steps run in microseconds to hours and Class 2 steps in days to thousands of years. Even a Class 2 step of 1000 years is 0.001 Myr, so T2 is negligible in every terrestrial scenario. This is the main result of Section 10: the chemistry is not what consumes the budget.",
+    "tier": "Tier A for most steps"
+   },
+   {
+    "id": "T3",
+    "name": "Coincidence waiting time",
+    "what_it_measures": "How long you must wait for several fast steps to occur in the same place, in the right order, before a flood, impact or dilution event resets the attempt. Read it as (number of independent attempts needed) divided by (rate at which independent attempts are generated).",
+    "how_estimated": "This is the term that actually consumes a short budget. It falls when the number of independent vessels rises. A pond is one vessel. A pumice eruption supplies of order 10^12 clasts, which is why the raft scenario sits at the fast end even though each individual clast only stays afloat for about 20 months.",
+    "tier": "Tier B"
+   },
+   {
+    "id": "T4",
+    "name": "Slow biological steps, Class 3",
+    "what_it_measures": "Crossing the error threshold and establishing heritability, then fixing a trait or enzyme family in a population.",
+    "how_estimated": "Standard estimates for fixation are 10^6 to 10^7 years, so 1 to 10 Myr. Every scenario pays this, so it sets the floor of about 1 Myr on the whole figure. No scenario can be faster than its slowest Class 3 step.",
+    "tier": "Tier B"
+   }
+  ],
+  "budget_note": "The available budget is arithmetic. 200 Myr is the interval from the end of the Moon-forming impact aftermath at about 4.40 Ga to a LUCA at 4.2 Ga: start 4.40 Ga, which is the first evidence of liquid water and the end of the Moon-forming impact aftermath at 4.36 Ga, end 4.2 Ga, the central LUCA estimate, so 4.40 minus 4.20 = 0.20 Gyr, about 200 Myr. 600 Myr is the same interval taken to a LUCA at 3.8 Ga: 4.40 minus 3.80 = 0.60 Gyr, about 600 Myr. Figure 8 shows both lines so the reader can see which scenarios depend on which date. The required duration is a sum of four terms, three of which are judgements, and the sum is then rounded to the nearest order of magnitude for the figure, which is why the plotted range and the component sum differ slightly.",
+  "trials_note": "Number of trials in a budget is the budget in seconds divided by the period of the driving cycle. A 100 Myr budget is 3.156 x 10^15 s. Divided by a 20 hour Hadean day (7.2 x 10^4 s) that is about 4.4 x 10^10 diurnal cycles. Tides at about 7 x 10^3 s give roughly an order of magnitude more. This is the number that matters for driven chemistry, where the cycle powers the reaction, rather than the ratio Pi. A 200 Myr budget is 6.311 x 10^15 s.",
+  "caveat": "One caveat that is stated in the manuscript and is worth repeating here: Figure 8 audits duration only. Passing the duration test is necessary but not sufficient. A scenario can fit the budget comfortably and still fail on other grounds, for example on whether it supplies a fast predictable cycle at all."
+ },
+ "free_energy": [
+  {
+   "currency": "redox couple",
+   "reaction": "4 H2 + 2 HCO3- gives acetate",
+   "value_kj_per_mol": -105.0,
+   "note": "Reported as about -105 kJ per mole under conditions plausible for a serpentinising vent. This is by some distance the largest of the three currencies.",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2442388/pdf/rstb20061881.pdf"
+  },
+  {
+   "currency": "activated group",
+   "reaction": "acetyl phosphate hydrolysis",
+   "value_kj_per_mol": -43.1,
+   "note": "",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12843986/table/molecules-31-00242-t002/"
+  },
+  {
+   "currency": "activated group",
+   "reaction": "ATP to ADP",
+   "value_kj_per_mol": -30.5,
+   "note": "",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12843986/table/molecules-31-00242-t002/"
+  },
+  {
+   "currency": "activated group",
+   "reaction": "ATP to AMP",
+   "value_kj_per_mol": -45.6,
+   "note": "",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12843986/table/molecules-31-00242-t002/"
+  },
+  {
+   "currency": "activated group",
+   "reaction": "pyrophosphate hydrolysis",
+   "value_kj_per_mol": -33.0,
+   "note": "",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12843986/table/molecules-31-00242-t002/"
+  },
+  {
+   "currency": "activated group",
+   "reaction": "glucose 6 phosphate hydrolysis",
+   "value_kj_per_mol": -13.8,
+   "note": "",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12843986/table/molecules-31-00242-t002/"
+  },
+  {
+   "currency": "activated group",
+   "reaction": "thioester hydrolysis, approximate",
+   "value_kj_per_mol": -31.0,
+   "note": "Approximate value, quoted in the manuscript as a thioester at roughly 31 kJ per mole.",
+   "source_url": null
+  },
+  {
+   "currency": "planetary gradient",
+   "reaction": "three pH units across a membrane or pore wall",
+   "value_kj_per_mol": 17.1,
+   "note": "Unit as given in the workbook: kJ per mole of protons.",
+   "source_url": null
+  },
+  {
+   "currency": "planetary gradient",
+   "reaction": "cost of concentrating a solute one thousand fold at 298 K, RT ln(1000)",
+   "value_kj_per_mol": 17.1,
+   "note": "Computed rather than asserted: R times T times the natural logarithm of the concentration factor, divided by 1000, with R = 8.314 J per mole per kelvin, T = 298.15 K and a factor of 1000, which returns 17.12 kJ per mole. It is the same value as three pH units across a membrane, because three pH units is a proton activity ratio of one thousand.",
+   "source_url": null
+  },
+  {
+   "currency": "cost side",
+   "reaction": "peptide bond formation in water",
+   "value_kj_per_mol": 15.0,
+   "note": "Cost side, not a payment. Reported as a range of 10 to 20 kJ per mole; the midpoint 15 is stored here and the range is the source value.",
+   "source_url": "https://pubmed.ncbi.nlm.nih.gov/24277128/"
+  },
+  {
+   "currency": "planetary gradient",
+   "reaction": "RT ln(factor) in kJ per mole, live formula on the Method_time_budgets sheet",
+   "value_kj_per_mol": 17.12,
+   "note": "Live check of the concentration cost, computed rather than asserted, with R = 8.314 J per mole per kelvin, T = 298.15 K and a concentration factor of 1000. It returns 17.1 kJ per mole, which is the same value as three pH units across a membrane, because three pH units is a proton activity ratio of one thousand. The equality is arithmetic, not a coincidence, and it is why a pH gradient and a concentration gradient are the same currency.",
+   "source_url": null
+  }
+ ],
+ "pi_examples": [
+  {
+   "pair": "Iron-rich anoxic oceans against enzyme family fixation",
+   "conditions_hold_yr": 1000000000,
+   "process_needs_yr": 1000000,
+   "expected_imprint": "fixed imprint",
+   "reading": "Pi is far above one, so composition is locked in and conserved. Iron-sulfur clusters are everywhere, still."
+  },
+  {
+   "pair": "Iron-rich anoxic oceans against slower fixation",
+   "conditions_hold_yr": 1000000000,
+   "process_needs_yr": 10000000,
+   "expected_imprint": "fixed imprint",
+   "reading": "Same pair at the slow end of the fixation estimate. Pi is still about 100, so the conclusion does not depend on which end you take."
+  },
+  {
+   "pair": "Archean metal availability shifts against metabolic innovation",
+   "conditions_hold_yr": 10000000,
+   "process_needs_yr": 10000000,
+   "expected_imprint": "transient imprint",
+   "reading": "Pi is about one, so expect recruitment, turnover and replacement rather than conservation, and regulation rather than fixed composition."
+  },
+  {
+   "pair": "Diurnal ultraviolet cycling against lineage-level fixation",
+   "conditions_hold_yr": 0.00228,
+   "process_needs_yr": 1000000,
+   "expected_imprint": "robustness, plus anticipation",
+   "reading": "Pi is about 2 x 10^-9. No imprint of any particular day survives, but there is strong general selection for photoprotection and repair. Because the day is also predictable, expect anticipation as well as buffering. Section 7.2 of the manuscript now quotes about 2 x 10^-9 for this row, from a 20 hour day of 2.3 x 10^-3 years divided by a fixation time of 10^6 years, so the text and this row now agree."
+  }
+ ],
+ "measurement_gaps": [
+  {
+   "id": "Gap 1",
+   "gap": "Rung affected: S3 to S4. What is already known: Amino acid intercalation into Mg-Al layered double hydroxide is demonstrated by the reconstruction method at 0.9 to 2.7 mmol per gram for every amino acid tested except lysine and arginine, where ion exchange failed. Reactive end to end alignment during drying is modelled, with up to 25 per cent of alanines in reactive arrangements, a maximum at about 2 water molecules per amino acid, and a layer thickness of 0.53 nm. Alanine dipeptide formation on brucite-like layers under wet and dry cycling is measured. Nobody has run it in green rust, which has a redox-active layer with Fe(II) as the divalent cation.",
+   "why_it_matters": "Which audit term it moves: Coincidence waiting time, term 3",
+   "what_would_settle_it": "Oligomer length distribution and yield per wet and dry cycle in green rust with carbonate and with sulfate interlayers, under strict anoxia.",
+   "linked_prediction": "Tier C, derived for this model: prediction 5, rates and the cycle budget, because the gap sets the yield per wet and dry cycle."
+  },
+  {
+   "id": "Gap 2",
+   "gap": "Rung affected: S1 to S2. What is already known: Structural Fe(II) in green rust reduces nitrite to ammonium with a pseudo-first-order constant of about 4.1 x 10^-5 per second, a half life of about 4.7 hours, while dissolved Fe(II) reduces nitrite to N2O gas. The published second-order constants for the dissolved route are inconsistent between the source table and its running text.",
+   "why_it_matters": "Which audit term it moves: Whether nitrogen passes at all, term 2 and term 3",
+   "what_would_settle_it": "The branch ratio between N2O loss and ammonium retention as a function of iron speciation, pH and salt content, reported in one consistent set of units.",
+   "linked_prediction": "Tier C, derived for this model: prediction 1, the iron against nitrogen coupling, because the gap decides whether fixed nitrogen is retained or destroyed."
+  },
+  {
+   "id": "Gap 3",
+   "gap": "Rung affected: S3 to S4. What is already known: Simple iron sulfur clusters assemble spontaneously from Fe(II) and sulfide in seconds to minutes, and the ferredoxin fold is the most conserved fold in the tree of life. What is not measured is the competition between capture by a short peptide and loss by oxidation or aggregation.",
+   "why_it_matters": "Which audit term it moves: Coincidence waiting time, term 3",
+   "what_would_settle_it": "The rate of [Fe4S4] capture by a short ferredoxin-like peptide against the oxidation and aggregation rate, at prebiotic iron and sulfide concentrations.",
+   "linked_prediction": "Tier C, derived for this model: prediction 4, the handoff line, because the gap is a direct race between capture and loss."
+  },
+  {
+   "id": "Gap 4",
+   "gap": "Rung affected: S4. What is already known: Acetyl phosphate forms from thioacetate and phosphate at about 2 per cent yield in 1 to 2 hours at 20 mM phosphate. Magnesium roughly doubles the yield, no acetyl phosphate forms at pH 11, and Fe2+ has little effect. Prebiotic ocean phosphate was micromolar, not millimolar.",
+   "why_it_matters": "Which audit term it moves: Class 2 chemistry, term 2",
+   "what_would_settle_it": "Acetyl phosphate yield at micromolar phosphate rather than 20 mM, with and without a concentrating surface.",
+   "linked_prediction": "Tier C, derived for this model: prediction 5, rates and the cycle budget, because the gap is a Class 2 yield at prebiotic phosphate concentrations."
+  },
+  {
+   "id": "Gap 5",
+   "gap": "Rung affected: S4 to S5. What is already known: Wet and dry cycling drives condensation, and the same cycling hydrolyses what it makes. Bulk yields of long oligonucleotides from non-activated nucleotides are at or below about one per cent per cycle.",
+   "why_it_matters": "Which audit term it moves: Cycle count and the S4 to S5 chokepoint, term 3 and term 4",
+   "what_would_settle_it": "Template strand-length half life measured under exactly the wet and dry cycle that drives the condensation, rather than under steady conditions.",
+   "linked_prediction": "Tier C, derived for this model: prediction 5, rates and the cycle budget, since it is the low yield of long polymers from wet and dry cycling where the manuscript says the pressure currently sits."
+  },
+  {
+   "id": "Gap 6",
+   "gap": "Rung affected: S4 to S5. What is already known: Modern folding and catalysis at the ribosome depend on Mg2+, but an anoxic Hadean ocean would have offered Fe(II) at comparable or higher activity. The crossover has not been measured for a folding site.",
+   "why_it_matters": "Which audit term it moves: Prediction 2 and the composition axis",
+   "what_would_settle_it": "The Fe(II) to Mg activity ratio at which a folding site switches its preferred cation, under strict anoxia.",
+   "linked_prediction": "Prediction 2 and the composition axis, as stated on the Measurement_gaps sheet."
+  }
+ ],
+ "predictions": [
+  {
+   "number": 1,
+   "title": "Coupling: iron against nitrogen",
+   "section": "Section 6.2",
+   "expectation": "Because Fe(II) destroys fixed nitrogen, the deepest nitrogen machinery should be import-based, not fixation-based.",
+   "broken_by": "an ancestral nitrogenase."
+  },
+  {
+   "number": 2,
+   "title": "Ordering of metals",
+   "section": "Sections 6 and 8",
+   "expectation": "Metal use in the most conserved enzyme families should follow the order in which those metals became available. Two cases are sharp enough to test on their own: tungsten is soluble in reduced water while molybdenum is not, so the oldest members of the relevant families should be tungsten-using (Schoepp-Cothenet et al.); and if Fe(II) was the early divalent cation, the switch to magnesium should track ocean oxygenation rather than any biological innovation.",
+   "broken_by": "a conserved dependence on a metal that became bioavailable only after LUCA, a phylogeny placing molybdenum ancestral to tungsten, or a magnesium switch well before oxygen rose. The tungsten case is a live risk rather than a safe bet, because isotope work already traces use of both metals to at least 3.4 Ga."
+  },
+  {
+   "number": 3,
+   "title": "Gating of carbon",
+   "section": "Section 6",
+   "expectation": "Carbon fixation should always sit downstream of transition metal and sulfide chemistry.",
+   "broken_by": "evidence for ancestral carbon fixation without metal sulfide catalysis."
+  },
+  {
+   "number": 4,
+   "title": "The handoff line, and photostability as its clearest case",
+   "section": "Figure 2, Section 2",
+   "expectation": "Species that plot below the diagonal should be absent from conserved biochemistry unless they had a storage route, and the sharpest version of that claim is about light: retained bases, chromophores and side chains should be more photostable than the prebiotic alternatives that were not retained.",
+   "broken_by": "a retained species with no plausible store, or a systematic survey showing no photostability enrichment."
+  },
+  {
+   "number": 5,
+   "title": "Rates and the cycle budget",
+   "section": "Sections 7.4 and 10",
+   "expectation": "Steps we call Class 1 or Class 2 should be reproducible in the laboratory inside the stated timescales, and no required process may need more cycles than the budget allows, which is 10^10 to 10^11 for a diurnal process.",
+   "broken_by": "a step we call fast that resists completion over years of cycling, or a required process shown to need more cycles than are available. The low yields of long polymers from wet and dry cycling (Eiby 2025) are where this pressure currently sits."
+  },
+  {
+   "number": 6,
+   "title": "Substrate test for glass",
+   "section": "Section 9.1.1",
+   "expectation": "Normalised per square metre of glass surface rather than per gram, silicic pumice should be a weaker polymerisation catalyst than mafic glass such as diabase (Jerome et al. 2022).",
+   "broken_by": "pumice matching or beating mafic glass once surface area is controlled for, which would strengthen the pumice case rather than the framework. Either result is informative."
+  },
+  {
+   "number": 7,
+   "title": "Composition of the oldest carbonaceous inclusions",
+   "section": "Sections 2 and 11.1",
+   "expectation": "The framework says nitrogen passed by storage, that phosphorus was scarce in water but concentrated on surfaces, and that both were present in a working cell well before the oldest rocks we can read. Isua-type carbonaceous inclusions armoured in metamorphic minerals should therefore carry carbon bonded to nitrogen and to phosphate, which is what has been reported (Hassenkam et al. 2017).",
+   "broken_by": "a larger, better-controlled survey of comparable inclusions showing nitrogen and phosphate systematically absent where carbon is present and demonstrably biogenic."
+  },
+  {
+   "number": 8,
+   "title": "The budget falsifier",
+   "section": "Sections 2 and 11.1",
+   "expectation": "A well-supported revision of LUCA to 3.9 Ga or younger relaxes the budget and re-admits the slow, land-dependent scenarios. We state in advance how we would update: the ladder, the handoff criterion and the couplings are unaffected, because they are about rates and not dates, but the audit in Figure 8 changes and the conclusion of Section 10 becomes weaker rather than wrong.",
+   "broken_by": "This prediction is itself the falsifier for the audit: a well-supported LUCA date of 3.9 Ga or younger would relax the budget and re-admit the scenarios that Figure 8 currently excludes."
+  }
+ ],
+ "references": [
+  {
+   "id": "R1",
+   "citation": "Abramov, O. and Mojzsis, S. J. Microbial habitability of the Hadean Earth during the late heavy bombardment. Nature",
+   "url": "https://www.nature.com/articles/nature08015",
+   "used_in": [
+    "Fig 1"
+   ],
+   "tier": "Tier A",
+   "note": "Sets the habitability floor and the near end of the envelope"
+  },
+  {
+   "id": "R2",
+   "citation": "Bada, J. L. and Korenaga, J. Exposed areas above sea level on Earth greater than 3.5 Ga",
+   "url": "https://people.earth.yale.edu/sites/default/files/bada18.pdf",
+   "used_in": [
+    "Fig 8"
+   ],
+   "tier": "Tier B",
+   "note": "Contested subaerial land, which is the T1 term for the wet and dry pool scenario"
+  },
+  {
+   "id": "R3",
+   "citation": "Baaske, P. et al. Extreme accumulation of nucleotides in simulated hydrothermal pore systems. PNAS",
+   "url": "https://www.pnas.org/doi/pdf/10.1073/pnas.0609592104",
+   "used_in": [
+    "Fig 6",
+    "Fig 8"
+   ],
+   "tier": "Tier A",
+   "note": "Class 2 concentration in a thermal gradient, hours to days"
+  },
+  {
+   "id": "R4",
+   "citation": "Boehnke, P. and Harrison, T. M. Illusory late heavy bombardments. PNAS",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.1611535113",
+   "used_in": [
+    "Fig 1"
+   ],
+   "tier": "Tier A",
+   "note": "Removes the late bombardment as a barrier to early habitability"
+  },
+  {
+   "id": "R5",
+   "citation": "Brasier, M. D., Matthewman, R., McMahon, S. and Wacey, D. Pumice as a remarkable substrate for the origin of life. Astrobiology 2011, 11(7), 725 to 735",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/21879814/",
+   "used_in": [
+    "Fig 2",
+    "Fig 6",
+    "Fig 8"
+   ],
+   "tier": "Tier A",
+   "note": "The pumice scenario, its substrate properties and its trial count"
+  },
+  {
+   "id": "R6",
+   "citation": "Bryan, S. E. et al. Rapid, long-distance dispersal by pumice rafting. PLoS ONE 2012, 7(7), e40583",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3399893/",
+   "used_in": [
+    "Fig 6",
+    "Fig 8"
+   ],
+   "tier": "Tier A",
+   "note": "Raft transit of 7 to 8 months and flotation of about 20 months, the Fig 6 band"
+  },
+  {
+   "id": "R7",
+   "citation": "Catling, D. C. and Zahnle, K. J. The Archean atmosphere. Science Advances",
+   "url": "https://www.science.org/doi/10.1126/sciadv.aax1420",
+   "used_in": [
+    "Fig 7"
+   ],
+   "tier": "Tier B",
+   "note": "Atmospheric conditions defining regime R2"
+  },
+  {
+   "id": "R8",
+   "citation": "Cockell, C. S. Ultraviolet radiation and the photobiology of Earth's early oceans",
+   "url": "https://arxiv.org/abs/astro-ph/0702529",
+   "used_in": [
+    "Fig 7"
+   ],
+   "tier": "Tier B",
+   "note": "Ultraviolet flux underlying the R2 persistence filter"
+  },
+  {
+   "id": "R9",
+   "citation": "Dupont, C. L. et al. History of biological metal utilization inferred through phylogenomic analysis of protein structures. PNAS",
+   "url": "https://www.whoi.edu/cms/files/Dupont_PNAS2006_34670.pdf",
+   "used_in": [
+    "Fig 2",
+    "Fig 3",
+    "Fig 7"
+   ],
+   "tier": "Tier A",
+   "note": "Metal utilisation legacy, including the iron relay and tungsten before molybdenum"
+  },
+  {
+   "id": "R10",
+   "citation": "Eiby, S. H. J. Investigating the Origin of Life at the Nanoscale: Assembly of Nucleic Acids in Prebiotic Scenarios. PhD thesis, Globe Institute, University of Copenhagen, 2025",
+   "url": null,
+   "used_in": [
+    "Fig 2",
+    "Fig 6"
+   ],
+   "tier": "Tier A",
+   "note": "Measured wet and dry cycling yields, G-quadruplex prepolymer assembly, and surface-protected persistence"
+  },
+  {
+   "id": "R11",
+   "citation": "Fetene, Y. and Addis, T. Adsorptive removal of phosphate from wastewater using Ethiopian rift pumice. Air, Soil and Water Research 2020",
+   "url": "https://journals.sagepub.com/doi/full/10.1177/1178622120969658",
+   "used_in": [
+    "Fig 2"
+   ],
+   "tier": "Tier A",
+   "note": "Phosphate adsorption kinetics onto pumice, the new Fig 2 point"
+  },
+  {
+   "id": "R12",
+   "citation": "Feulner, G. The faint young Sun problem. Reviews of Geophysics",
+   "url": "https://courses.seas.harvard.edu/climate/eli/Courses/EPS281r/Sources/Faint-young-sun-paradox/more/Feulner-2012-review.pdf",
+   "used_in": [
+    "Fig 8"
+   ],
+   "tier": "Tier B",
+   "note": "Why sustained freezing is hard to arrange, the T1 term for the icy scenario"
+  },
+  {
+   "id": "R13",
+   "citation": "Gatenby, R. A., Gallaher, J., Subramanian, H., Hammarlund, E. U. and Whelan, C. J. On the origin of information dynamics in early life. Life 15, 234, 2025",
+   "url": "https://doi.org/10.3390/life15020234",
+   "used_in": [
+    "Fig 6",
+    "Fig 7"
+   ],
+   "tier": "Tier A",
+   "note": "Predictable diurnal cycling as the first source of biological information"
+  },
+  {
+   "id": "R14",
+   "citation": "Hazen, R. M. Mineral surfaces and the prebiotic selection and organization of biomolecules",
+   "url": "https://hazen.carnegiescience.edu/sites/default/files/187-Hazen-MSAPresAddress.pdf",
+   "used_in": [
+    "Fig 2",
+    "Fig 6"
+   ],
+   "tier": "Tier A",
+   "note": "Surface binding as the mechanism that moves polymers across the diagonal"
+  },
+  {
+   "id": "R15",
+   "citation": "Hazen, R. M. et al. Hadean palaeomineralogy",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6315770/",
+   "used_in": [
+    "Fig 1",
+    "Fig 3"
+   ],
+   "tier": "Tier A",
+   "note": "Mineral inventory available in the Hadean"
+  },
+  {
+   "id": "R16",
+   "citation": "Jerome, C. A., Kim, H.-J., Mojzsis, S. J., Benner, S. A. and Biondi, E. Catalytic synthesis of polyribonucleic acid on prebiotic rock glasses. Astrobiology 2022, 22(6), 629 to 636",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9233534/",
+   "used_in": [
+    "Fig 2",
+    "Fig 8"
+   ],
+   "tier": "Tier A",
+   "note": "Volcanic glass as an active catalytic substrate, not merely a surface"
+  },
+  {
+   "id": "R17",
+   "citation": "Krissansen-Totton, J. et al. Constraining the climate and ocean pH of the early Earth. PNAS",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5910859/",
+   "used_in": [
+    "Fig 1",
+    "Fig 3"
+   ],
+   "tier": "Tier A",
+   "note": "Ocean pH and temperature bounds"
+  },
+  {
+   "id": "R18",
+   "citation": "Kurokawa, H. et al. Cold and alkaline Hadean ocean",
+   "url": "https://ui.adsabs.harvard.edu/abs/2020GGG....2108734K",
+   "used_in": [
+    "Fig 3"
+   ],
+   "tier": "Tier A",
+   "note": "Alkaline conditions relevant to the phosphate escape route"
+  },
+  {
+   "id": "R19",
+   "citation": "Lunar recession modelling",
+   "url": "https://arxiv.org/pdf/2304.04866",
+   "used_in": [
+    "Fig 6"
+   ],
+   "tier": "Tier A",
+   "note": "Hadean tidal period and amplitude"
+  },
+  {
+   "id": "R20",
+   "citation": "Milankovitch cycles in banded iron formations and Precambrian day length. PNAS",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.2117146119",
+   "used_in": [
+    "Fig 6"
+   ],
+   "tier": "Tier A",
+   "note": "Day length constraint, the 6 to 17 hour Hadean range"
+  },
+  {
+   "id": "R21",
+   "citation": "Moody, E. R. R. et al. The nature of the last universal common ancestor and its impact on the early Earth system. Nature Ecology and Evolution, 2024",
+   "url": "https://www.nature.com/articles/s41559-024-02461-1",
+   "used_in": [
+    "Fig 1",
+    "Fig 7"
+   ],
+   "tier": "Tier A",
+   "note": "The 4.33 to 4.09 Ga LUCA estimate that sets the far end of the envelope"
+  },
+  {
+   "id": "R22",
+   "citation": "Moore, E. K. et al. Metal availability and the expanding network of microbial metabolisms in the Archaean eon. Nature Geoscience",
+   "url": "https://www.nature.com/articles/ngeo3006",
+   "used_in": [
+    "Fig 7",
+    "Pi_ratio"
+   ],
+   "tier": "Tier A",
+   "note": "The Pi about one worked example, metalloenzyme recruitment and turnover"
+  },
+  {
+   "id": "R23",
+   "citation": "Pasek, M. A. Rethinking early Earth phosphorus geochemistry. PNAS",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.0708205105",
+   "used_in": [
+    "Fig 2",
+    "Fig 3",
+    "Fig 4"
+   ],
+   "tier": "Tier A",
+   "note": "Reduced phosphorus as an escape route from the phosphate problem"
+  },
+  {
+   "id": "R24",
+   "citation": "Ranjan, S. et al. Nitrogen oxide concentrations in natural waters on early Earth",
+   "url": "https://arxiv.org/abs/1902.07740",
+   "used_in": [
+    "Fig 2",
+    "Fig 3",
+    "Fig 4"
+   ],
+   "tier": "Tier A",
+   "note": "Nitrogen oxides held below about one micromolar, a Tier A number"
+  },
+  {
+   "id": "R25",
+   "citation": "Ranjan, S. et al. Sulfite constraints on the prebiotic sulfur cycle",
+   "url": "https://d197for5662m48.cloudfront.net/documents/publicationstatus/175469/preprint_pdf/4306d1109cfd69bdb40a7f2b0a58d8b3.pdf",
+   "used_in": [
+    "Fig 2",
+    "Fig 3",
+    "Fig 4"
+   ],
+   "tier": "Tier A",
+   "note": "Sulfite capped near 100 micromolar by photolysis, the S(IV) row"
+  },
+  {
+   "id": "R26",
+   "citation": "Ranjan, S. and Sasselov, D. D. Influence of the ultraviolet environment on the synthesis of prebiotic molecules",
+   "url": "https://arxiv.org/abs/1610.06223",
+   "used_in": [
+    "Fig 2",
+    "Fig 7"
+   ],
+   "tier": "Tier A",
+   "note": "Ultraviolet-limited synthesis, the formaldehyde row"
+  },
+  {
+   "id": "R27",
+   "citation": "Robbins, L. J. et al. Trace elements in Earth's oceans through time. Nature Reviews Earth and Environment",
+   "url": "https://www.nature.com/articles/s43017-023-00477-y",
+   "used_in": [
+    "Fig 3",
+    "Fig 7",
+    "Pi_ratio"
+   ],
+   "tier": "Tier A",
+   "note": "Metal availability through time"
+  },
+  {
+   "id": "R28",
+   "citation": "Ross, D. S. and Deamer, D. Dry-wet cycling and the thermodynamics and kinetics of prebiotic polymer synthesis",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/27472365/",
+   "used_in": [
+    "Fig 6"
+   ],
+   "tier": "Tier A",
+   "note": "One wet and dry cycle is one polymerisation opportunity, hours"
+  },
+  {
+   "id": "R29",
+   "citation": "Wacey, D. et al. Volcanogenic pseudo-fossils from the 3.48 Ga Dresser Formation, Pilbara. Astrobiology 2018",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5963881/",
+   "used_in": [
+    "Fig 8"
+   ],
+   "tier": "Tier B",
+   "note": "Caution on interpreting volcanic textures as biosignatures"
+  },
+  {
+   "id": "R30",
+   "citation": "Walton, C. R. et al. Phosphorus availability on the early Earth. Nature Geoscience",
+   "url": "https://reinhard.gatech.edu/uploads/5/4/1/0/54106417/walton_natgeo_2023.pdf",
+   "used_in": [
+    "Fig 2",
+    "Fig 3",
+    "Fig 4"
+   ],
+   "tier": "Tier A",
+   "note": "The phosphorus availability problem and the calcium competition"
+  },
+  {
+   "id": "R31",
+   "citation": "Weiss, M. C. et al. The physiology and habitat of the last universal common ancestor. Nature Microbiology 2016",
+   "url": "https://www.molevol.hhu.de/fileadmin/redaktion/Fakultaeten/Mathematisch-Naturwissenschaftliche_Fakultaet/Biologie/Institute/Molekulare_Evolution/Dokumente/Weiss_et_al_Nat_Microbiol_2016.pdf",
+   "used_in": [
+    "Fig 2",
+    "Fig 7"
+   ],
+   "tier": "Tier A",
+   "note": "LUCA physiology, iron-sulfur and Wood-Ljungdahl chemistry"
+  },
+  {
+   "id": "R32",
+   "citation": "Williams, R. J. P. The Goldilocks problem of metal availability. Philosophical Transactions of the Royal Society A",
+   "url": "https://royalsocietypublishing.org/doi/10.1098/rsta.2014.0188",
+   "used_in": [
+    "Fig 7"
+   ],
+   "tier": "Tier B",
+   "note": "Availability as a selective filter"
+  },
+  {
+   "id": "R33",
+   "citation": "Review of the earliest evidence for life",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12329462/",
+   "used_in": [
+    "Fig 1"
+   ],
+   "tier": "Tier A",
+   "note": "Status of the contested biosignatures"
+  },
+  {
+   "id": "R34",
+   "citation": "Abiotic fixed nitrogen and early ecosystems",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13274591/",
+   "used_in": [
+    "Fig 2"
+   ],
+   "tier": "Tier A",
+   "note": "Compiled abiotic nitrogen fixation fluxes, episodic against continuous"
+  },
+  {
+   "id": "R35",
+   "citation": "Review of N2 activation energetics",
+   "url": "https://www.sciencedirect.com/science/article/abs/pii/S0920586122003492",
+   "used_in": [
+    "Fig 2",
+    "Fig 3"
+   ],
+   "tier": "Tier A",
+   "note": "941 kJ per mole total and about 410 kJ per mole for the rate-determining first bond"
+  },
+  {
+   "id": "R36",
+   "citation": "Ferrocyanide formation",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10875668/",
+   "used_in": [
+    "Fig 2",
+    "Fig 4"
+   ],
+   "tier": "Tier A",
+   "note": "Storage reaction in minutes to hours, best around pH 8 to 9"
+  },
+  {
+   "id": "R37",
+   "citation": "Cyanide hydrolysis rate constants",
+   "url": "https://arxiv.org/pdf/2608.00025",
+   "used_in": [
+    "Fig 2"
+   ],
+   "tier": "Tier A",
+   "note": "Tier A lifetimes for both HCN rows, and their temperature and pH dependence"
+  },
+  {
+   "id": "R38",
+   "citation": "Toner, J. D. and Catling, D. C. Alkaline lake cyanide",
+   "url": "https://faculty.washington.edu/dcatling/Toner2019_Alkaline_Lake_Cyanide_with_SI.pdf",
+   "used_in": [
+    "Fig 2",
+    "Fig 4"
+   ],
+   "tier": "Tier A",
+   "note": "Alkaline lakes as a cyanide and ammonium store"
+  },
+  {
+   "id": "R39",
+   "citation": "Buessecker, S. et al. Mineral-catalysed NO and N2O formation",
+   "url": "https://ntrs.nasa.gov/api/citations/20220017494/downloads/NatureGeo_Buessecker_accepted.pdf",
+   "used_in": [
+    "Fig 3",
+    "Fig 4"
+   ],
+   "tier": "Tier A",
+   "note": "The Fe to N antagonism coupling: iron destroys fixed nitrogen"
+  },
+  {
+   "id": "R40",
+   "citation": "Lightning-induced interfacial electrochemistry. PNAS",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.2400819121",
+   "used_in": [
+    "Fig 3",
+    "Fig 4"
+   ],
+   "tier": "Tier A",
+   "note": "Nitrogen fixation and CO2 reduction in the same discharge environment"
+  },
+  {
+   "id": "R41",
+   "citation": "Electrochemical CO2 activation. Chemical Society Reviews",
+   "url": "https://pubs.rsc.org/en/content/articlehtml/2020/cs/d0cs00835d",
+   "used_in": [
+    "Fig 2"
+   ],
+   "tier": "Tier A",
+   "note": "Why uncatalysed CO2 reduction is effectively never"
+  },
+  {
+   "id": "R42",
+   "citation": "Kwawu, C. et al. CO2 dissociation on Fe and Ni surfaces",
+   "url": "https://discovery.ucl.ac.uk/id/eprint/10065207/7/Kwawu_CO2%2520Dissociation%2520Fe-Ni%2520paper%2520accepted%2520MS.pdf",
+   "used_in": [
+    "Fig 2",
+    "Fig 3"
+   ],
+   "tier": "Tier A",
+   "note": "Catalytic route for the carbon gate"
+  },
+  {
+   "id": "R43",
+   "citation": "Activating the FeS(001) surface for CO2 adsorption and reduction",
+   "url": "https://research-portal.uu.nl/en/publications/activating-the-fes-001-surface-for-cosub2sub-adsorption-and-reduc",
+   "used_in": [
+    "Fig 2",
+    "Fig 3",
+    "Fig 4"
+   ],
+   "tier": "Tier A",
+   "note": "Seconds or less once a surface with sulfur vacancies exists"
+  },
+  {
+   "id": "R44",
+   "citation": "Eos on prebiotic sulfur cycling. Eos",
+   "url": "https://eos.org/editor-highlights/new-constraints-on-sulfur-cycling-in-the-prebiotic-earth",
+   "used_in": [
+    "Fig 2"
+   ],
+   "tier": "Tier A",
+   "note": "Plain-language summary of the sulfite cap"
+  },
+  {
+   "id": "R45",
+   "citation": "Impact sterilisation modelling",
+   "url": "https://arxiv.org/pdf/2201.09349",
+   "used_in": [
+    "Fig 1",
+    "Fig 8"
+   ],
+   "tier": "Tier A",
+   "note": "The sterilisation reset that sets the start of the budget, and the impact-driven hydrothermal setting"
+  },
+  {
+   "id": "R46",
+   "citation": "Early subaerial emergence review. Annual Reviews",
+   "url": "https://www.annualreviews.org/content/journals/10.1146/annurev-earth-040722-093345",
+   "used_in": [
+    "Fig 8"
+   ],
+   "tier": "Tier B",
+   "note": "How much land existed, the contested T1 term for subaerial pools"
+  },
+  {
+   "id": "R47",
+   "citation": "Heat flows enrich prebiotic building blocks",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10990939/",
+   "used_in": [
+    "Fig 6",
+    "Fig 8"
+   ],
+   "tier": "Tier A",
+   "note": "Class 2 enrichment on hour to day timescales"
+  },
+  {
+   "id": "R48",
+   "citation": "Green rust chimneys concentrate RNA. Geobiology",
+   "url": "https://onlinelibrary.wiley.com/doi/abs/10.1111/gbi.12572",
+   "used_in": [
+    "Fig 6"
+   ],
+   "tier": "Tier A",
+   "note": "Mineral precipitate construction in minutes to hours"
+  },
+  {
+   "id": "R49",
+   "citation": "Wet and dry cycling polymerises nucleic acid monomers. PNAS",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.2412784121",
+   "used_in": [
+    "Fig 6"
+   ],
+   "tier": "Tier A",
+   "note": "Cycle-driven polymerisation, a driving cycle rather than ambient drift"
+  },
+  {
+   "id": "R50",
+   "citation": "Template-directed replication during wet and dry cycling",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/37629605/",
+   "used_in": [
+    "Fig 6"
+   ],
+   "tier": "Tier A",
+   "note": "Replication under cycling, relevant to the S4 to S5 chokepoint"
+  },
+  {
+   "id": "R51",
+   "citation": "Thresholds in origin-of-life scenarios",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7674518/",
+   "used_in": [
+    "Fig 8"
+   ],
+   "tier": "Tier B",
+   "note": "Threshold framing behind the required duration judgements"
+  },
+  {
+   "id": "R52",
+   "citation": "Diurnal iron cycling",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8024245/",
+   "used_in": [
+    "Fig 6"
+   ],
+   "tier": "Tier A",
+   "note": "Iron chemistry following the diurnal cycle"
+  },
+  {
+   "id": "R53",
+   "citation": "Jupp, T. and Schultz, A. Tidal modulation of hydrothermal flow, poroelastic model",
+   "url": "https://timjupp.github.io/docs/jupp.schultz.2004a.pdf",
+   "used_in": [
+    "Fig 6",
+    "Fig 8"
+   ],
+   "tier": "Tier A",
+   "note": "Why deep vents also experience a fast predictable cycle"
+  },
+  {
+   "id": "R54",
+   "citation": "Tide-related variability at Juan de Fuca. Earth and Planetary Science Letters",
+   "url": "https://www.sciencedirect.com/science/article/abs/pii/S0012821X02008014",
+   "used_in": [
+    "Fig 6",
+    "Fig 8"
+   ],
+   "tier": "Tier A",
+   "note": "Observed semi-diurnal rhythms in vent temperature and exit velocity"
+  },
+  {
+   "id": "R55",
+   "citation": "Lucky Strike hydrothermal records. PANGAEA",
+   "url": "https://doi.pangaea.de/10.1594/PANGAEA.820343",
+   "used_in": [
+    "Fig 6",
+    "Fig 8"
+   ],
+   "tier": "Tier A",
+   "note": "Long time series showing tidal modulation of vent flow"
+  },
+  {
+   "id": "R56",
+   "citation": "Bell, E. A. et al. Potentially biogenic carbon preserved in a 4.1 billion-year-old zircon. PNAS",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.1517557112",
+   "used_in": [
+    "Fig 1"
+   ],
+   "tier": "Tier A",
+   "note": "Carbon inclusion in a Jack Hills zircon, the oldest contested carbon isotope signal, which bears on the near end of the envelope"
+  },
+  {
+   "id": "R57",
+   "citation": "Hassenkam, T. et al. Elements of Eoarchaean life trapped in mineral inclusions. Nature",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/28738409/",
+   "used_in": [
+    "Fig 1",
+    "prediction 7"
+   ],
+   "tier": "Tier A",
+   "note": "Carbonaceous inclusions armoured in garnet in more than 3700 Ma Isua rock, measured in situ, with carbon bonded to nitrogen, oxygen and probably phosphate. This is the compositional test the framework points at"
+  },
+  {
+   "id": "R58",
+   "citation": "Rosing, M. T. 13C-depleted carbon microparticles in more than 3700 Ma sea-floor sedimentary rocks from West Greenland. Science",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/9924024/",
+   "used_in": [
+    "Fig 1"
+   ],
+   "tier": "Tier A",
+   "note": "The isotopic case for biological carbon in the oldest sedimentary rocks"
+  },
+  {
+   "id": "R59",
+   "citation": "Rosing, M. T. and Frei, R. U-rich Archaean sea-floor sediments from Greenland, indications of more than 3700 Ma oxygenic photosynthesis. Earth and Planetary Science Letters",
+   "url": "https://geosci.uchicago.edu/~archer/deep_earth_readings/rosing.2004.Isua_38.pdf",
+   "used_in": [
+    "Fig 1"
+   ],
+   "tier": "Tier A",
+   "note": "Redox-sensitive elements in the same succession, which pushes an already complex biosphere earlier"
+  },
+  {
+   "id": "R60",
+   "citation": "Rosing, M. T. et al. No climate paradox under the faint early Sun. Nature",
+   "url": "https://www.nature.com/articles/nature08955",
+   "used_in": [
+    "Fig 1"
+   ],
+   "tier": "Tier A",
+   "note": "A lower-albedo alternative to a strong greenhouse, which keeps the near end of the envelope early without requiring extreme CO2"
+  },
+  {
+   "id": "R61",
+   "citation": "Nutman, A. P. et al. Rapid emergence of life shown by discovery of 3700 million-year-old microbial structures. Nature",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/27580034/",
+   "used_in": [
+    "Fig 1"
+   ],
+   "tier": "Tier A",
+   "note": "Reported Isua stromatolites. Included because the morphological claim is contested and the framework prefers compositional tests"
+  },
+  {
+   "id": "R62",
+   "citation": "Wilde, S. A. et al. Evidence from detrital zircons for the existence of continental crust and oceans on the Earth 4.4 Gyr ago. Nature",
+   "url": "https://www.nature.com/articles/35051550",
+   "used_in": [
+    "Fig 1"
+   ],
+   "tier": "Tier A",
+   "note": "The oxygen isotope evidence for liquid water at 4.4 Ga, which sets the near end of the envelope"
+  },
+  {
+   "id": "R63",
+   "citation": "Kimura, M. and Ohta, T. The average number of generations until fixation of a mutant gene in a finite population. Genetics",
+   "url": "https://academic.oup.com/genetics/article-abstract/61/3/763/6056577",
+   "used_in": [
+    "Class 3",
+    "Section 10.3"
+   ],
+   "tier": "Tier A",
+   "note": "The standard result behind the claim that fixing a trait is slow: about 4Ne generations for a neutral variant, and roughly (2/s)ln(2N) for a favoured one"
+  },
+  {
+   "id": "R64",
+   "citation": "Mrnjavac, N. et al. The nature of LUCA's metabolism and the transition to a cellular state. ACS journals",
+   "url": "https://www.molevol.hhu.de/fileadmin/redaktion/Fakultaeten/Mathematisch-Naturwissenschaftliche_Fakultaet/Biologie/Institute/Molekulare_Evolution/Dokumente/Mrnjavac_et_al_ACS_2024.pdf",
+   "used_in": [
+    "Fig 3",
+    "Fig 6"
+   ],
+   "tier": "Tier A",
+   "note": "The nickel enzymes close to the root, which is the legacy column for the new nickel row"
+  },
+  {
+   "id": "R65",
+   "citation": "Athavale, S. S. et al. (Williams group). Nature of Fe(II) as the early divalent cation of nucleic acid chemistry. Georgia Tech, Williams group",
+   "url": "https://williams.chemistry.gatech.edu/publications/LDW_123.pdf",
+   "used_in": [
+    "Fig 3",
+    "Fig 6"
+   ],
+   "tier": "Tier A",
+   "note": "The 25 times and 3.5 times ribozyme activity enhancements with Fe(II) over Mg(II) under strict anoxia, which is the basis of the substitution coupling"
+  },
+  {
+   "id": "R66",
+   "citation": "Magnesium in RNA folding (review). Roles of magnesium and other divalent cations in RNA structure and catalysis. PMC",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8747768/",
+   "used_in": [
+    "Fig 3",
+    "Fig 6"
+   ],
+   "tier": "Tier A",
+   "note": "The modern baseline against which the Fe(II) result is compared"
+  },
+  {
+   "id": "R67",
+   "citation": "Schoepp-Cothenet, B. et al. The ineluctable requirement for the trans-iron elements molybdenum and tungsten in the origin and evolution of life. Scientific Reports",
+   "url": "https://www.nature.com/articles/srep00263",
+   "used_in": [
+    "Prediction 2"
+   ],
+   "tier": "Tier A",
+   "note": "The solubility argument for tungsten before molybdenum"
+  },
+  {
+   "id": "R68",
+   "citation": "Biological use of Mo and W to 3.4 Ga. Biological use of molybdenum and tungsten stems back to 3.4 billion years. University of St Andrews research portal",
+   "url": "https://research-portal.st-andrews.ac.uk/en/publications/biological-use-of-molybdenum-and-tungsten-stems-back-to-34-billio/",
+   "used_in": [
+    "Prediction 2"
+   ],
+   "tier": "Tier A",
+   "note": "Isotope evidence that both metals were already in biological use early, which is why the tungsten half of prediction 2 is flagged as a live risk"
+  },
+  {
+   "id": "R69",
+   "citation": "Na and K homeostasis (review). Sodium and potassium homeostasis and the potassium-rich origin hypothesis. PMC",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5898217/",
+   "used_in": [
+    "Elements_considered"
+   ],
+   "tier": "Tier A",
+   "note": "The universal high potassium and low sodium interior, used to separate composition from duration"
+  },
+  {
+   "id": "R70",
+   "citation": "Mulkidjanian, A. Y. et al. Origin of first cells at terrestrial, anoxic geothermal fields. PMC",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3325685/",
+   "used_in": [
+    "Elements_considered"
+   ],
+   "tier": "Tier A",
+   "note": "The potassium-rich geothermal field scenario"
+  },
+  {
+   "id": "R71",
+   "citation": "Dupont, C. L. et al. (metallome). History of biological metal utilization inferred from phylogenomic analysis of protein structures. PNAS",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.0605798103",
+   "used_in": [
+    "Elements_considered"
+   ],
+   "tier": "Tier A",
+   "note": "Which metals look ancient and which look late, used for the cobalt and copper rows"
+  },
+  {
+   "id": "R72",
+   "citation": "Zinc critique. Zinc and the early evolution of metalloproteins. PMC",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2936651/",
+   "used_in": [
+    "Elements_considered"
+   ],
+   "tier": "Tier A",
+   "note": "Why zinc was not carried into the matrix"
+  },
+  {
+   "id": "R73",
+   "citation": "Old iron, young copper. Metal availability and the evolution of metalloproteins: old iron, young copper. PubMed",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/11508852/",
+   "used_in": [
+    "Elements_considered"
+   ],
+   "tier": "Tier A",
+   "note": "The control case for prediction 2"
+  },
+  {
+   "id": "R74",
+   "citation": "Selenium usage. Evolutionary history of selenium utilization. Metallomics",
+   "url": "https://academic.oup.com/metallomics/article/13/6/mfab024/6261189",
+   "used_in": [
+    "Elements_considered"
+   ],
+   "tier": "Tier A",
+   "note": "Why selenium was not carried"
+  },
+  {
+   "id": "R75",
+   "citation": "Ricardo, A. et al. Borate minerals stabilize ribose. Science",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/14716004/",
+   "used_in": [
+    "Elements_considered"
+   ],
+   "tier": "Tier A",
+   "note": "The borate and ribose effect, and why boron was not carried"
+  },
+  {
+   "id": "R76",
+   "citation": "Martin, W. and Russell, M. J. On the origin of biochemistry at an alkaline hydrothermal vent. Philosophical Transactions of the Royal Society B",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2442388/pdf/rstb20061881.pdf",
+   "used_in": [
+    "Section 5.2",
+    "Method_time_budgets"
+   ],
+   "tier": "Tier A",
+   "note": "The energetics of acetate from H2 and bicarbonate, about 105 kJ per mole, which is the reference value for the redox couple currency"
+  },
+  {
+   "id": "R77",
+   "citation": "Group transfer potentials, standard free energies of hydrolysis. Molecules, table 2",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12843986/table/molecules-31-00242-t002/",
+   "used_in": [
+    "Section 5.2",
+    "Method_time_budgets"
+   ],
+   "tier": "Tier A",
+   "note": "Acetyl phosphate at -43.1 down to glucose 6 phosphate at -13.8 kJ per mole, the reference values for the activated group currency"
+  },
+  {
+   "id": "R78",
+   "citation": "Condensation of amino acids on mineral surfaces",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/24277128/",
+   "used_in": [
+    "Section 5.2",
+    "Method_time_budgets"
+   ],
+   "tier": "Tier A",
+   "note": "The 10 to 20 kJ per mole cost of forming a peptide bond in water, the cost side of the currency table"
+  },
+  {
+   "id": "R79",
+   "citation": "Whicher, A. et al. Acetyl phosphate as a primordial energy currency at the origin of life. Origins of Life and Evolution of Biospheres",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6061221/",
+   "used_in": [
+    "Fig 5",
+    "Section 6.3",
+    "Section 12"
+   ],
+   "tier": "Tier A",
+   "note": "Acetyl phosphate from thioacetate and phosphate at about 2 per cent yield, and its hydrolysis in minutes to hours, which is the S4 loss term for the phosphorus chain and the basis of Gap 4"
+  },
+  {
+   "id": "R80",
+   "citation": "Wong, M. L. et al. Nitrogen oxides in early Earth's atmosphere as electron acceptors for life's emergence. Astrobiology 2017",
+   "url": "https://web.gps.caltech.edu/~yly/yly_mac/ReprintsYLY/N339Wong%202017%20NOx.pdf",
+   "used_in": [
+    "Fig 5",
+    "Section 6.3"
+   ],
+   "tier": "Tier A",
+   "note": "NOx from lightning and photochemistry, and its photolysis in the sunlit layer, which is the S1 loss term for the nitrogen chain"
+  },
+  {
+   "id": "R81",
+   "citation": "Ranjan, S. et al. Nitrogen oxide concentrations in natural waters on early Earth",
+   "url": "http://arxiv.org/pdf/1902.07740",
+   "used_in": [
+    "Fig 5",
+    "Section 6.3"
+   ],
+   "tier": "Tier A",
+   "note": "Prebiotic ocean NOx held below about one micromolar"
+  },
+  {
+   "id": "R82",
+   "citation": "Jones, L. C. et al. Nitrite reduction by green rust and by dissolved Fe(II)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6427828/",
+   "used_in": [
+    "Fig 5",
+    "Section 6.3",
+    "Section 12"
+   ],
+   "tier": "Tier A",
+   "note": "The branch between ammonium retention on structural Fe(II) and N2O loss to dissolved Fe(II), which is the S2 loss term for nitrogen and the basis of Gap 2"
+  },
+  {
+   "id": "R83",
+   "citation": "Summers, D. P. and Chang, S. Prebiotic ammonia from reduction of nitrite by iron(II) on the early Earth. NASA technical reports",
+   "url": "https://ntrs.nasa.gov/citations/19950032158",
+   "used_in": [
+    "Section 12"
+   ],
+   "tier": "Tier A",
+   "note": "The dissolved Fe(II) route to ammonia, and the second-order constants that Gap 2 asks to be reported consistently"
+  },
+  {
+   "id": "R84",
+   "citation": "Green rust reduction of nitrate to ammonium. Environmental Science and Technology",
+   "url": "https://pubs.acs.org/doi/10.1021/es950844w",
+   "used_in": [
+    "Fig 5",
+    "Section 6.3",
+    "Section 12"
+   ],
+   "tier": "Tier A",
+   "note": "Ammonium production on a green rust surface, and the outgassing of NH3 at high pH that is the S3 loss term for nitrogen"
+  },
+  {
+   "id": "R85",
+   "citation": "Nakayama, H. et al. Intercalation of amino acids and peptides into Mg-Al layered double hydroxide. 2004",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/14706258/",
+   "used_in": [
+    "Section 12"
+   ],
+   "tier": "Tier A",
+   "note": "Intercalation at 0.9 to 2.7 mmol per gram for every amino acid tested except lysine and arginine, the starting point for Gap 1"
+  },
+  {
+   "id": "R86",
+   "citation": "Erastova, V. et al. Mineral surface alignment of amino acids on drying. PMC",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5725419/",
+   "used_in": [
+    "Section 12"
+   ],
+   "tier": "Tier A",
+   "note": "Reactive end to end alignment during drying, up to 25 per cent of alanines in reactive arrangements at about 2 water molecules per amino acid"
+  },
+  {
+   "id": "R87",
+   "citation": "Gregoire, B., Greenwell, H. C. and Fraser, D. G. Peptide formation on brucite-like layers. ACS Earth and Space Chemistry 2018",
+   "url": "https://pubs.acs.org/doi/10.1021/acsearthspacechem.8b00052",
+   "used_in": [
+    "Section 12"
+   ],
+   "tier": "Tier A",
+   "note": "Measured alanine dipeptide formation under wet and dry cycling, the closest existing analogue to the green rust experiment of Gap 1"
+  },
+  {
+   "id": "R88",
+   "citation": "Damkohler numbers. Reference article",
+   "url": "https://en.wikipedia.org/wiki/Damk%C3%B6hler_numbers",
+   "used_in": [
+    "Section 6.2"
+   ],
+   "tier": "Tier A",
+   "note": "The standard dimensionless ratio of reaction rate to transport rate, which is the established relative of the Pi ratio"
+  },
+  {
+   "id": "R89",
+   "citation": "Damkohler number applied to weathering and reactive transport. ACS Earth and Space Chemistry",
+   "url": "https://pubs.acs.org/doi/10.1021/acsearthspacechem.6b00007",
+   "used_in": [
+    "Section 6.2"
+   ],
+   "tier": "Tier A",
+   "note": "The same ratio used in a geochemical setting, which is the precedent for applying it across a planetary timescale"
+  }
+ ],
+ "preservation": {
+  "gates": [
+   {
+    "id": "S6a",
+    "name": "Ecosystem persistence",
+    "criterion": "Da_eco = vessel lifetime divided by nutrient recycling time. This is the same handoff criterion applied to a community instead of a molecule.",
+    "reading": "One turnover is a population that lives once and dies. Many turnovers is an ecosystem that recycles, cross-feeds and keeps going after any single cell dies. The reconstructed gene set of LUCA is that of a chemolithoautotroph living on hydrogen, carbon dioxide, nitrogen and transition metals, and it already carries dependencies that only make sense if other organisms were supplying things, so the community, not the cell, is the unit that survived.",
+    "tier": "Tier B",
+    "parameters": [
+     {
+      "id": "tau_vessel",
+      "label": "Vessel lifetime",
+      "value": 100000,
+      "unit": "yr",
+      "low": 100,
+      "high": 10000000,
+      "tier": "Tier B",
+      "note": "An impact-generated hydrothermal system runs for of order 10^5 years. A single pond may last years. A vent field can last far longer."
+     },
+     {
+      "id": "tau_recycle",
+      "label": "Nutrient recycling time",
+      "value": 10,
+      "unit": "yr",
+      "low": 0.01,
+      "high": 10000,
+      "tier": "Tier C",
+      "note": "How long it takes the community to turn its limiting nutrient over once. Modern microbial mats do this in days to years."
+     },
+     {
+      "id": "turnovers_for_ecosystem",
+      "label": "Turnovers needed to call it an ecosystem",
+      "value": 1000,
+      "unit": "count",
+      "low": 10,
+      "high": 1000000,
+      "tier": "Tier C",
+      "note": "New to this model. There is no measured value. It is the number of recycling cycles needed before functional differentiation and cross-feeding can be established."
+     }
+    ],
+    "sources": [
+     {
+      "citation": "Weiss et al. 2016, The physiology and habitat of the last universal common ancestor",
+      "url": "https://www.nature.com/articles/nmicrobiol2016116"
+     }
+    ]
+   },
+   {
+    "id": "S6b",
+    "name": "Rock-record preservation",
+    "criterion": "tau_degradation at the burial temperature must exceed the age of the rock, and the rock must not have passed the thermal maturity ceiling.",
+    "reading": "Two separate things can destroy a molecular trace. One is slow chemistry over a very long time, which the Arrhenius calculation covers. The other is a short hot event, which no amount of time-averaging survives. Above roughly 150 degrees C the oil window closes and only methane is left. Above greenschist metamorphism carbon atoms exchange with their surroundings, so even the carbon isotope value starts to drift.",
+    "tier": "Tier A for the half-lives, Tier B for the extrapolation",
+    "parameters": [
+     {
+      "id": "T_burial",
+      "label": "Burial temperature",
+      "value": 60,
+      "unit": "C",
+      "low": 0,
+      "high": 600,
+      "tier": "Tier B",
+      "note": "Average temperature the material sat at, not the peak. For Isua the peak was 500 to 600 C."
+     },
+     {
+      "id": "rock_age",
+      "label": "Age of the rock",
+      "value": 3700,
+      "unit": "Myr",
+      "low": 1,
+      "high": 4400,
+      "tier": "Tier A",
+      "note": "Isua is 3.7 to 3.8 Ga. Jack Hills zircons reach 4.4 Ga."
+     },
+     {
+      "id": "Ea_degradation",
+      "label": "Activation energy for degradation",
+      "value": 63,
+      "unit": "kJ per mol",
+      "low": 30,
+      "high": 200,
+      "tier": "Tier B",
+      "note": "Derived in the app from measured RNA phosphodiester hydrolysis at two temperatures. Higher values make extrapolation to low temperature much more optimistic, which is exactly why this parameter should be tweaked and watched."
+     }
+    ],
+    "sources": []
+   }
+  ],
+  "molecule_classes": [
+   {
+    "name": "RNA, phosphodiester backbone",
+    "role_in_life": "information and catalysis",
+    "bond_types": "phosphodiester, plus a 2 prime hydroxyl that attacks its own backbone",
+    "half_life_value": 4,
+    "half_life_unit": "yr",
+    "half_life_temp_c": 25,
+    "second_point": "9 days at 100 C",
+    "polarity": "highly polar, fully water soluble",
+    "verdict": "never preserved",
+    "why": "The 2 prime hydroxyl group next to the phosphodiester linkage attacks the backbone from the inside. The molecule is built to be cleaved. Nothing in the geological record can hold it.",
+    "tier": "Tier A",
+    "source_urls": [
+     "https://bionumbers.hms.harvard.edu/bionumber.aspx?id=105354&ver=3"
+    ]
+   },
+   {
+    "name": "Free nucleobases, adenine and guanine",
+    "role_in_life": "information carriers",
+    "bond_types": "glycosidic and ring carbon nitrogen bonds",
+    "half_life_value": 10000,
+    "half_life_unit": "yr",
+    "half_life_temp_c": 25,
+    "second_point": "about 1 yr at 100 C, and 6 x 10^5 to 1.3 x 10^6 yr at 0 C",
+    "polarity": "polar, water soluble",
+    "verdict": "never preserved",
+    "why": "Even at freezing point the most stable bases reach only about a million years. That is three to four orders of magnitude short of the Archean. Cytosine is far worse at 340 years at 25 C, which is a separate and well known problem for any RNA-first account.",
+    "tier": "Tier A",
+    "source_urls": [
+     "https://www.pnas.org/doi/10.1073/pnas.95.14.7933"
+    ]
+   },
+   {
+    "name": "Peptides and proteins",
+    "role_in_life": "catalysis and structure",
+    "bond_types": "amide, hydrolysable",
+    "half_life_value": 0.3,
+    "half_life_unit": "Myr thermal age at 10 C",
+    "half_life_temp_c": 10,
+    "second_point": "oldest recovered sequences reach 3.8 Myr chronological age, and only when bound inside a mineral",
+    "polarity": "polar, mostly water soluble",
+    "verdict": "never preserved on Archean timescales",
+    "why": "Amide bonds hydrolyse and amino acids racemise. The record stops in the millions of years even with mineral binding, which is about a thousand times short of the Archean. Mineral binding does buy real time, which is the same effect the model uses for RNA on a surface, but it is not enough.",
+    "tier": "Tier A",
+    "source_urls": [
+     "https://elifesciences.org/articles/17092"
+    ]
+   },
+   {
+    "name": "Sugars and free phosphate esters",
+    "role_in_life": "backbone components and energy currency",
+    "bond_types": "hemiacetal, glycosidic, phosphoester",
+    "half_life_value": null,
+    "half_life_unit": null,
+    "half_life_temp_c": null,
+    "second_point": "ribose degrades on timescales of hours to weeks at moderate temperature and neutral pH",
+    "polarity": "very polar",
+    "verdict": "never preserved",
+    "why": "These are the most reactive functional molecules in the whole sequence, which is exactly why they work as chemistry and exactly why they leave nothing.",
+    "tier": "Tier B",
+    "source_urls": []
+   },
+   {
+    "name": "Hopanes and steranes, saturated hydrocarbon skeletons",
+    "role_in_life": "membrane rigidity, from hopanols and sterols",
+    "bond_types": "carbon carbon and carbon hydrogen only, no hydrolysable bond",
+    "half_life_value": null,
+    "half_life_unit": null,
+    "half_life_temp_c": null,
+    "second_point": "stable for billions of years in rocks that stayed below the end of the oil window, but absent from every Archean sequence tested so far",
+    "polarity": "non polar, essentially insoluble in water",
+    "verdict": "preserved, but not in any Archean rock yet found",
+    "why": "There is no bond for water to attack and the molecule will not dissolve. Diagenesis strips the one alcohol group off the precursor, so the fossil is chemically more inert than the living molecule was. The limit is not time, it is heat: ultraclean Archean drill cores put total hopanes below 37.9 picograms per gram and total steranes below 32.9 picograms per gram, indistinguishable from the blanks, and the authors conclude that no currently known Archean strata lie within the thermal maturity window in which these molecules could have survived.",
+    "tier": "Tier A",
+    "source_urls": [
+     "https://pmc.ncbi.nlm.nih.gov/articles/PMC4434754/",
+     "https://web.gps.caltech.edu/~als/research-articles/other_stuff/brocks2004.pdf"
+    ]
+   },
+   {
+    "name": "Kerogen, cross-linked macromolecular residue",
+    "role_in_life": "not a biomolecule, it is what is left of many",
+    "bond_types": "aromatic and aliphatic carbon network, insoluble and non hydrolysable",
+    "half_life_value": null,
+    "half_life_unit": null,
+    "half_life_temp_c": null,
+    "second_point": "survives to at least 3.7 Ga and retains a carbon isotope signal",
+    "polarity": "insoluble in water and in organic solvents",
+    "verdict": "preserved",
+    "why": "Kerogen forms in two ways that both favour inertness. Resistant, non hydrolysable biomacromolecules are selectively preserved while everything hydrolysable is destroyed, and degradation products repolymerise into a random insoluble network. The result traps whatever is inside it and has almost nothing left for water to react with.",
+    "tier": "Tier A",
+    "source_urls": [
+     "https://royalsocietypublishing.org/rstb/article-pdf/333/1268/329/82322/rstb.1991.0082.pdf",
+     "https://www.sciencedirect.com/science/article/abs/pii/0146638093900279"
+    ]
+   },
+   {
+    "name": "Graphitic carbon and carbon isotope ratios",
+    "role_in_life": "none, it is the end product",
+    "bond_types": "graphitic carbon carbon only",
+    "half_life_value": null,
+    "half_life_unit": null,
+    "half_life_temp_c": null,
+    "second_point": "the Isua rocks reached peak metamorphic temperatures of 500 to 600 C and the graphite still carries a preserved carbon isotope composition",
+    "polarity": "none",
+    "verdict": "preserved, and the only molecular class that reaches 3.7 Ga",
+    "why": "Nothing is left to destroy except the isotope ratio itself, and that only starts to drift above greenschist metamorphism, where carbon atoms begin exchanging with their surroundings. This is why the earliest evidence for life is an isotope ratio and a texture rather than a molecule.",
+    "tier": "Tier A",
+    "source_urls": [
+     "https://www.nature.com/articles/s43247-025-02215-2",
+     "https://www.whoi.edu/science/GG/geodynamics/2005/images2005/van%20Zuilen%20et%20al%202003.pdf",
+     "https://ajsonline.org/article/116058-the-carbon-isotopic-composition-of-archean-kerogen-and-its-resilience-through-the-rock-cycle.pdf"
+    ]
+   },
+   {
+    "name": "Mineral-hosted organic inclusions",
+    "role_in_life": "trapped remains of a community",
+    "bond_types": "mixed, but shielded by the host crystal",
+    "half_life_value": null,
+    "half_life_unit": null,
+    "half_life_temp_c": null,
+    "second_point": "reported in 3.7 Ga Isua material",
+    "polarity": "not applicable, the host controls access",
+    "verdict": "preserved by the matrix rather than by the molecule",
+    "why": "A crystal that closes around the material removes water and oxidant access, so the protection is physical instead of chemical. This is the same trick as RNA bound to a mineral surface in the handoff table, taken to its limit, and it is why inclusion studies are the most promising route to pre-3.5 Ga organic evidence.",
+    "tier": "Tier B",
+    "source_urls": [
+     "https://pubmed.ncbi.nlm.nih.gov/28738409/"
+    ]
+   }
+  ],
+  "why_refractory": [
+   {
+    "point": "Function requires reactive bonds, and reactive bonds are the ones water attacks",
+    "detail": "Every molecule that does chemical work in a cell does it through a hydrolysable bond: the phosphoester in RNA and ATP, the amide in a peptide, the thioester in acetyl coenzyme A, the hemiacetal in a sugar. The reactivity is the function. So the molecules that carry out S4 activation and S5 heritable use are, by construction, the least preservable molecules in the whole sequence. This is not bad luck. It is the same property seen from two directions."
+   },
+   {
+    "point": "The molecules that survive were built for insulation, not for chemistry",
+    "detail": "Lipid skeletons exist to keep water out of a membrane interior. To do that they are made of carbon and hydrogen only, with no polar group and no hydrolysable bond. That makes them useless as catalysts and almost indestructible as fossils. Preservation therefore samples the structural side of biochemistry and misses the functional side entirely."
+   },
+   {
+    "point": "Diagenesis makes the survivors more inert than they were alive",
+    "detail": "A sterol becomes a sterane and a hopanol becomes a hopane by losing its single alcohol group and having its double bonds saturated. The fossil molecule is a stripped down version of the biological one. Preservation is not passive storage, it is a further filter that removes whatever reactivity was left."
+   },
+   {
+    "point": "A matrix can protect a molecule that could not protect itself",
+    "detail": "Cross-linking into kerogen, or enclosure inside a growing crystal, removes water and oxidant access. This is physical protection rather than chemical inertness, and it is the only route by which anything polar reaches the deep record at all. It is the geological version of the surface binding arrow in the handoff figure."
+   },
+   {
+    "point": "Pre-LUCA molecules had neither property",
+    "detail": "Before S5 there were no lipid membranes producing long hydrocarbon skeletons and no macromolecular network to trap anything. The inventory was small, polar, hydrolysable species at micromolar concentrations. So the absence of pre-LUCA molecular evidence is exactly what the chemistry predicts, and it carries no information about whether that chemistry happened. This is worth stating plainly because the absence is often read as if it were evidence."
+   },
+   {
+    "point": "The consequence for the paper",
+    "detail": "The rock record can only ever sample the subset of molecules that pass S6, and that subset is close to disjoint from the molecules that pass S4 and S5. So the earliest evidence for LUCA will be isotopic, textural and inclusion-based rather than molecular, no matter how good the instruments get. Reading the record any other way is reading the preservation filter and mistaking it for history."
+   }
+  ]
+ }
+}

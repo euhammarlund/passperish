@@ -1,0 +1,184 @@
+{
+  "rung": {
+    "id": "S6",
+    "name": "Preservation",
+    "from_reservoir": "a single heritable lineage",
+    "to_reservoir": "a persistent ecosystem, and then a readable trace in rock",
+    "mechanism": "Recycling inside a community, then chemical inertness plus a protective mineral or macromolecular matrix",
+    "loss_process": "Community collapse and nutrient exhaustion; then hydrolysis, oxidation, thermal cracking, isotope exchange and recrystallisation during burial and metamorphism",
+    "unit_selected": "the refractory subset, which is not the functional subset",
+    "is_filter": true,
+    "does_it_consume_the_budget": false,
+    "description": "S6 comes after S5 and does not consume the pre-LUCA budget. It is a filter on the evidence rather than on life. Nothing about S6 had to happen before LUCA existed. But S6 decides what we are allowed to see, so it decides which of the earlier rungs can ever be tested against a rock. Two gates have to be passed in order. First the lineage has to become a community, because LUCA was not alone and a single cell line in a single vessel leaves no measurable trace. Second, some product of that community has to be chemically inert enough, and physically protected enough, to survive four billion years of burial."
+  },
+  "gates": [
+    {
+      "id": "S6a",
+      "name": "Ecosystem persistence",
+      "criterion": "Da_eco = vessel lifetime divided by nutrient recycling time. This is the same handoff criterion applied to a community instead of a molecule.",
+      "reading": "One turnover is a population that lives once and dies. Many turnovers is an ecosystem that recycles, cross-feeds and keeps going after any single cell dies. The reconstructed gene set of LUCA is that of a chemolithoautotroph living on hydrogen, carbon dioxide, nitrogen and transition metals, and it already carries dependencies that only make sense if other organisms were supplying things, so the community, not the cell, is the unit that survived.",
+      "tier": "Tier B",
+      "parameters": [
+        {"id": "tau_vessel", "label": "Vessel lifetime", "value": 100000, "unit": "yr", "low": 100, "high": 10000000, "tier": "Tier B", "note": "An impact-generated hydrothermal system runs for of order 10^5 years. A single pond may last years. A vent field can last far longer."},
+        {"id": "tau_recycle", "label": "Nutrient recycling time", "value": 10, "unit": "yr", "low": 0.01, "high": 10000, "tier": "Tier C", "note": "How long it takes the community to turn its limiting nutrient over once. Modern microbial mats do this in days to years."},
+        {"id": "turnovers_for_ecosystem", "label": "Turnovers needed to call it an ecosystem", "value": 1000, "unit": "count", "low": 10, "high": 1000000, "tier": "Tier C", "note": "New to this model. There is no measured value. It is the number of recycling cycles needed before functional differentiation and cross-feeding can be established."}
+      ],
+      "sources": [
+        {"citation": "Weiss et al. 2016, The physiology and habitat of the last universal common ancestor", "url": "https://www.nature.com/articles/nmicrobiol2016116"}
+      ]
+    },
+    {
+      "id": "S6b",
+      "name": "Rock-record preservation",
+      "criterion": "tau_degradation at the burial temperature must exceed the age of the rock, and the rock must not have passed the thermal maturity ceiling.",
+      "reading": "Two separate things can destroy a molecular trace. One is slow chemistry over a very long time, which the Arrhenius calculation covers. The other is a short hot event, which no amount of time-averaging survives. Above roughly 150 degrees C the oil window closes and only methane is left. Above greenschist metamorphism carbon atoms exchange with their surroundings, so even the carbon isotope value starts to drift.",
+      "tier": "Tier A for the half-lives, Tier B for the extrapolation",
+      "parameters": [
+        {"id": "T_burial", "label": "Burial temperature", "value": 60, "unit": "C", "low": 0, "high": 600, "tier": "Tier B", "note": "Average temperature the material sat at, not the peak. For Isua the peak was 500 to 600 C."},
+        {"id": "rock_age", "label": "Age of the rock", "value": 3700, "unit": "Myr", "low": 1, "high": 4400, "tier": "Tier A", "note": "Isua is 3.7 to 3.8 Ga. Jack Hills zircons reach 4.4 Ga."},
+        {"id": "Ea_degradation", "label": "Activation energy for degradation", "value": 63, "unit": "kJ per mol", "low": 30, "high": 200, "tier": "Tier B", "note": "Derived in the app from measured RNA phosphodiester hydrolysis at two temperatures. Higher values make extrapolation to low temperature much more optimistic, which is exactly why this parameter should be tweaked and watched."}
+      ],
+      "sources": []
+    }
+  ],
+  "molecule_classes": [
+    {
+      "name": "RNA, phosphodiester backbone",
+      "role_in_life": "information and catalysis",
+      "bond_types": "phosphodiester, plus a 2 prime hydroxyl that attacks its own backbone",
+      "half_life_value": 4,
+      "half_life_unit": "yr",
+      "half_life_temp_c": 25,
+      "second_point": "9 days at 100 C",
+      "polarity": "highly polar, fully water soluble",
+      "verdict": "never preserved",
+      "why": "The 2 prime hydroxyl group next to the phosphodiester linkage attacks the backbone from the inside. The molecule is built to be cleaved. Nothing in the geological record can hold it.",
+      "tier": "Tier A",
+      "source_urls": ["https://bionumbers.hms.harvard.edu/bionumber.aspx?id=105354&ver=3"]
+    },
+    {
+      "name": "Free nucleobases, adenine and guanine",
+      "role_in_life": "information carriers",
+      "bond_types": "glycosidic and ring carbon nitrogen bonds",
+      "half_life_value": 10000,
+      "half_life_unit": "yr",
+      "half_life_temp_c": 25,
+      "second_point": "about 1 yr at 100 C, and 6 x 10^5 to 1.3 x 10^6 yr at 0 C",
+      "polarity": "polar, water soluble",
+      "verdict": "never preserved",
+      "why": "Even at freezing point the most stable bases reach only about a million years. That is three to four orders of magnitude short of the Archean. Cytosine is far worse at 340 years at 25 C, which is a separate and well known problem for any RNA-first account.",
+      "tier": "Tier A",
+      "source_urls": ["https://www.pnas.org/doi/10.1073/pnas.95.14.7933"]
+    },
+    {
+      "name": "Peptides and proteins",
+      "role_in_life": "catalysis and structure",
+      "bond_types": "amide, hydrolysable",
+      "half_life_value": 0.3,
+      "half_life_unit": "Myr thermal age at 10 C",
+      "half_life_temp_c": 10,
+      "second_point": "oldest recovered sequences reach 3.8 Myr chronological age, and only when bound inside a mineral",
+      "polarity": "polar, mostly water soluble",
+      "verdict": "never preserved on Archean timescales",
+      "why": "Amide bonds hydrolyse and amino acids racemise. The record stops in the millions of years even with mineral binding, which is about a thousand times short of the Archean. Mineral binding does buy real time, which is the same effect the model uses for RNA on a surface, but it is not enough.",
+      "tier": "Tier A",
+      "source_urls": ["https://elifesciences.org/articles/17092"]
+    },
+    {
+      "name": "Sugars and free phosphate esters",
+      "role_in_life": "backbone components and energy currency",
+      "bond_types": "hemiacetal, glycosidic, phosphoester",
+      "half_life_value": null,
+      "half_life_unit": null,
+      "half_life_temp_c": null,
+      "second_point": "ribose degrades on timescales of hours to weeks at moderate temperature and neutral pH",
+      "polarity": "very polar",
+      "verdict": "never preserved",
+      "why": "These are the most reactive functional molecules in the whole sequence, which is exactly why they work as chemistry and exactly why they leave nothing.",
+      "tier": "Tier B",
+      "source_urls": []
+    },
+    {
+      "name": "Hopanes and steranes, saturated hydrocarbon skeletons",
+      "role_in_life": "membrane rigidity, from hopanols and sterols",
+      "bond_types": "carbon carbon and carbon hydrogen only, no hydrolysable bond",
+      "half_life_value": null,
+      "half_life_unit": null,
+      "half_life_temp_c": null,
+      "second_point": "stable for billions of years in rocks that stayed below the end of the oil window, but absent from every Archean sequence tested so far",
+      "polarity": "non polar, essentially insoluble in water",
+      "verdict": "preserved, but not in any Archean rock yet found",
+      "why": "There is no bond for water to attack and the molecule will not dissolve. Diagenesis strips the one alcohol group off the precursor, so the fossil is chemically more inert than the living molecule was. The limit is not time, it is heat: ultraclean Archean drill cores put total hopanes below 37.9 picograms per gram and total steranes below 32.9 picograms per gram, indistinguishable from the blanks, and the authors conclude that no currently known Archean strata lie within the thermal maturity window in which these molecules could have survived.",
+      "tier": "Tier A",
+      "source_urls": ["https://pmc.ncbi.nlm.nih.gov/articles/PMC4434754/", "https://web.gps.caltech.edu/~als/research-articles/other_stuff/brocks2004.pdf"]
+    },
+    {
+      "name": "Kerogen, cross-linked macromolecular residue",
+      "role_in_life": "not a biomolecule, it is what is left of many",
+      "bond_types": "aromatic and aliphatic carbon network, insoluble and non hydrolysable",
+      "half_life_value": null,
+      "half_life_unit": null,
+      "half_life_temp_c": null,
+      "second_point": "survives to at least 3.7 Ga and retains a carbon isotope signal",
+      "polarity": "insoluble in water and in organic solvents",
+      "verdict": "preserved",
+      "why": "Kerogen forms in two ways that both favour inertness. Resistant, non hydrolysable biomacromolecules are selectively preserved while everything hydrolysable is destroyed, and degradation products repolymerise into a random insoluble network. The result traps whatever is inside it and has almost nothing left for water to react with.",
+      "tier": "Tier A",
+      "source_urls": ["https://royalsocietypublishing.org/rstb/article-pdf/333/1268/329/82322/rstb.1991.0082.pdf", "https://www.sciencedirect.com/science/article/abs/pii/0146638093900279"]
+    },
+    {
+      "name": "Graphitic carbon and carbon isotope ratios",
+      "role_in_life": "none, it is the end product",
+      "bond_types": "graphitic carbon carbon only",
+      "half_life_value": null,
+      "half_life_unit": null,
+      "half_life_temp_c": null,
+      "second_point": "the Isua rocks reached peak metamorphic temperatures of 500 to 600 C and the graphite still carries a preserved carbon isotope composition",
+      "polarity": "none",
+      "verdict": "preserved, and the only molecular class that reaches 3.7 Ga",
+      "why": "Nothing is left to destroy except the isotope ratio itself, and that only starts to drift above greenschist metamorphism, where carbon atoms begin exchanging with their surroundings. This is why the earliest evidence for life is an isotope ratio and a texture rather than a molecule.",
+      "tier": "Tier A",
+      "source_urls": ["https://www.nature.com/articles/s43247-025-02215-2", "https://www.whoi.edu/science/GG/geodynamics/2005/images2005/van%20Zuilen%20et%20al%202003.pdf", "https://ajsonline.org/article/116058-the-carbon-isotopic-composition-of-archean-kerogen-and-its-resilience-through-the-rock-cycle.pdf"]
+    },
+    {
+      "name": "Mineral-hosted organic inclusions",
+      "role_in_life": "trapped remains of a community",
+      "bond_types": "mixed, but shielded by the host crystal",
+      "half_life_value": null,
+      "half_life_unit": null,
+      "half_life_temp_c": null,
+      "second_point": "reported in 3.7 Ga Isua material",
+      "polarity": "not applicable, the host controls access",
+      "verdict": "preserved by the matrix rather than by the molecule",
+      "why": "A crystal that closes around the material removes water and oxidant access, so the protection is physical instead of chemical. This is the same trick as RNA bound to a mineral surface in the handoff table, taken to its limit, and it is why inclusion studies are the most promising route to pre-3.5 Ga organic evidence.",
+      "tier": "Tier B",
+      "source_urls": ["https://pubmed.ncbi.nlm.nih.gov/28738409/"]
+    }
+  ],
+  "why_refractory": [
+    {
+      "point": "Function requires reactive bonds, and reactive bonds are the ones water attacks",
+      "detail": "Every molecule that does chemical work in a cell does it through a hydrolysable bond: the phosphoester in RNA and ATP, the amide in a peptide, the thioester in acetyl coenzyme A, the hemiacetal in a sugar. The reactivity is the function. So the molecules that carry out S4 activation and S5 heritable use are, by construction, the least preservable molecules in the whole sequence. This is not bad luck. It is the same property seen from two directions."
+    },
+    {
+      "point": "The molecules that survive were built for insulation, not for chemistry",
+      "detail": "Lipid skeletons exist to keep water out of a membrane interior. To do that they are made of carbon and hydrogen only, with no polar group and no hydrolysable bond. That makes them useless as catalysts and almost indestructible as fossils. Preservation therefore samples the structural side of biochemistry and misses the functional side entirely."
+    },
+    {
+      "point": "Diagenesis makes the survivors more inert than they were alive",
+      "detail": "A sterol becomes a sterane and a hopanol becomes a hopane by losing its single alcohol group and having its double bonds saturated. The fossil molecule is a stripped down version of the biological one. Preservation is not passive storage, it is a further filter that removes whatever reactivity was left."
+    },
+    {
+      "point": "A matrix can protect a molecule that could not protect itself",
+      "detail": "Cross-linking into kerogen, or enclosure inside a growing crystal, removes water and oxidant access. This is physical protection rather than chemical inertness, and it is the only route by which anything polar reaches the deep record at all. It is the geological version of the surface binding arrow in the handoff figure."
+    },
+    {
+      "point": "Pre-LUCA molecules had neither property",
+      "detail": "Before S5 there were no lipid membranes producing long hydrocarbon skeletons and no macromolecular network to trap anything. The inventory was small, polar, hydrolysable species at micromolar concentrations. So the absence of pre-LUCA molecular evidence is exactly what the chemistry predicts, and it carries no information about whether that chemistry happened. This is worth stating plainly because the absence is often read as if it were evidence."
+    },
+    {
+      "point": "The consequence for the paper",
+      "detail": "The rock record can only ever sample the subset of molecules that pass S6, and that subset is close to disjoint from the molecules that pass S4 and S5. So the earliest evidence for LUCA will be isotopic, textural and inclusion-based rather than molecular, no matter how good the instruments get. Reading the record any other way is reading the preservation filter and mistaking it for history."
+    }
+  ]
+}

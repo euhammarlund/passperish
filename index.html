@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pass or perish: the rate-gate model</title>
+<meta name="description" content="An interactive audit of the Hadean time budget, from chemistry to probability to duration, for the manuscript Pass or perish.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-label="Pass or perish rate-gate model logo">
+        <rect x="1" y="1" width="32" height="32" rx="3" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M5 29 L29 5" stroke="currentColor" stroke-width="1.6" stroke-dasharray="4 3"/>
+        <circle cx="11.5" cy="11.5" r="3.4" fill="currentColor"/>
+        <circle cx="22.5" cy="22.5" r="3.4" stroke="currentColor" stroke-width="1.6"/>
+      </svg>
+      <div class="brand-text">
+        <h1>Pass or perish</h1>
+        <p>The rate-gate model: chemistry to probability to duration</p>
+      </div>
+    </div>
+    <div class="budget-chip">
+      <span class="lbl">Budget</span>
+      <span class="val" id="chipBudget">200</span><span class="unit">Myr</span>
+      <span class="lbl" style="margin-left:6px">Chemistry at</span>
+      <span class="val" id="chipTemp">70</span><span class="unit">C</span>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-view="envelope" aria-selected="true">1. Envelope</button>
+    <button role="tab" data-view="audit" aria-selected="false">2. Audit</button>
+    <button role="tab" data-view="handoffs" aria-selected="false">3. Handoffs</button>
+    <button role="tab" data-view="ladder" aria-selected="false">4. Ladder and elements</button>
+    <button role="tab" data-view="preservation" aria-selected="false">5. Preservation, S6</button>
+    <button role="tab" data-view="regimes" aria-selected="false">6. Regimes and vocabulary</button>
+    <button role="tab" data-view="params" aria-selected="false">7. Parameters and sources</button>
+    <button role="tab" data-view="export" aria-selected="false">8. Export and import</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ============ 1. ENVELOPE ============ -->
+<section class="view active" id="v-envelope">
+  <div class="grid g-side">
+    <div>
+      <div class="card">
+        <h2>Set the near end</h2>
+        <p class="sub">When could the chemistry have started at all</p>
+        <div class="field">
+          <label><span class="flabel">How to set it</span></label>
+          <div class="seg" id="nearModeSeg">
+            <button data-v="event" aria-pressed="true">Named event</button>
+            <button data-v="temperature" aria-pressed="false">Temperature</button>
+            <button data-v="manual" aria-pressed="false">By hand</button>
+          </div>
+        </div>
+        <div class="field" id="nearEventField">
+          <label><span class="flabel">Planetary event</span></label>
+          <select id="nearEvent"></select>
+          <div class="hint" id="nearEventHint"></div>
+        </div>
+        <div id="nearTempField" hidden></div>
+        <div class="field" id="nearManualField" hidden>
+          <label><span class="flabel">Age, Ga</span></label>
+          <input type="number" id="nearManual" min="3.6" max="4.6" step="0.01" value="4.40">
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Set the far end</h2>
+        <p class="sub">Which evidence for LUCA you are prepared to accept</p>
+        <div class="field">
+          <div class="seg" id="farModeSeg">
+            <button data-v="event" aria-pressed="true">Published estimate</button>
+            <button data-v="manual" aria-pressed="false">By hand</button>
+          </div>
+        </div>
+        <div class="field" id="farEventField">
+          <label><span class="flabel">Evidence</span></label>
+          <select id="farEvent"></select>
+          <div class="hint" id="farEventHint"></div>
+        </div>
+        <div class="field" id="farManualField" hidden>
+          <label><span class="flabel">Age, Ga</span></label>
+          <input type="number" id="farManual" min="3.4" max="4.6" step="0.01" value="4.20">
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Temperature for the chemistry</h2>
+        <p class="sub">This is a separate choice from the envelope</p>
+        <div class="field">
+          <div class="seg" id="tempModeSeg">
+            <button data-v="manual" aria-pressed="true">Set it myself</button>
+            <button data-v="curve" aria-pressed="false">Read the cooling curve</button>
+          </div>
+          <div class="hint">Reading the curve ties the chemistry temperature to the near end you chose, so a cooler start also slows every handoff.</div>
+        </div>
+        <div id="chemTempField"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>What the envelope means</h2>
+        <p class="lede">The <strong>near end</strong> is planetary. It is the moment when the surface stopped being hostile to any chemistry at all, and nothing about biology sets it. The <strong>far end</strong> is biological. It is the latest moment by which LUCA must already have existed, and it depends entirely on which evidence you accept. The difference between the two is the whole budget the chemistry has to work in.</p>
+        <div class="kpis" id="envKpis" style="margin-top:14px"></div>
+        <div id="envWarn"></div>
+      </div>
+
+      <div class="fig" style="margin-top:18px">
+        <div class="fig-head">
+          <div><h2>Figure E1. The envelope</h2><p class="sub">Your two ends, drawn against the published evidence</p></div>
+          <div class="fig-tools" data-fig="envelope">
+            <button class="btn sm" data-dl="svg">SVG</button>
+            <button class="btn sm" data-dl="png">PNG</button>
+          </div>
+        </div>
+        <div class="fig-body" id="figEnvelope"></div>
+        <p class="fig-cap" id="capEnvelope"></p>
+      </div>
+
+      <div class="fig" style="margin-top:18px">
+        <div class="fig-head">
+          <div><h2>Figure E2. Cooling curve</h2><p class="sub">Tier C. Editable anchors, illustrative only</p></div>
+          <div class="fig-tools" data-fig="cooling">
+            <button class="btn sm" data-dl="svg">SVG</button>
+            <button class="btn sm" data-dl="png">PNG</button>
+          </div>
+        </div>
+        <div class="fig-body" id="figCooling"></div>
+        <p class="fig-cap">This curve is not a result. It is a way of turning a temperature preference into a start age so that the choice is explicit rather than hidden. Edit the anchor points on the Parameters page and watch the near end move.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. AUDIT ============ -->
+<section class="view" id="v-audit">
+  <div class="card">
+    <h2>How a required duration is built</h2>
+    <p class="sub">Four terms, and only two of them are computed from measured chemistry</p>
+    <div class="tbl-wrap"><table class="data" id="tblTerms"></table></div>
+    <p class="note" style="margin-top:14px">T1 is a scenario judgement you can scale. T2 and T3 are computed here from the handoff table, the temperature and the cycle, so changing the chemistry changes the duration. T4 is computed from population genetics and is the same for every scenario by design, which is why it sets the floor of the whole figure.</p>
+  </div>
+
+  <div class="fig" style="margin-top:18px">
+    <div class="fig-head">
+      <div><h2>Figure A1. Time-budget audit</h2><p class="sub">Required duration per scenario against the budget you set</p></div>
+      <div class="fig-tools" data-fig="audit">
+        <button class="btn sm" data-dl="svg">SVG</button>
+        <button class="btn sm" data-dl="png">PNG</button>
+        <button class="btn sm" id="dlAuditCsv">CSV</button>
+      </div>
+    </div>
+    <div class="fig-body" id="figAudit"></div>
+    <p class="fig-cap">The grey bar marked "ms" under each scenario is the range printed in the manuscript, so you can see at a glance where the live model agrees with the published judgement and where your parameter choices have moved it.</p>
+  </div>
+
+  <div class="grid g-side-r" style="margin-top:18px">
+    <div class="card">
+      <h2>Scenario results</h2>
+      <p class="sub">Click a row to see the full chain of numbers behind it</p>
+      <div class="tbl-wrap"><table class="data" id="tblAudit"></table></div>
+    </div>
+    <div class="card">
+      <h2>Behind the number</h2>
+      <p class="sub">Every step from chemistry to duration</p>
+      <div id="auditDetail"><p class="empty">Select a scenario.</p></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>Which passages could have been very quick</h2>
+    <p class="sub">Sorted by the transfer time the model is currently using</p>
+    <div class="tbl-wrap"><table class="data" id="tblFast"></table></div>
+  </div>
+</section>
+
+<!-- ============ 3. HANDOFFS ============ -->
+<section class="view" id="v-handoffs">
+  <div class="card">
+    <h2>Chemistry becomes a probability</h2>
+    <p class="lede">Each rung has a transfer time and a loss time. Their ratio is the Damkohler number, <strong>Da = tau loss divided by tau transfer</strong>. The probability that a species is handed on rather than destroyed is <strong>p = Da divided by (1 + Da)</strong>. That is not an extra assumption on top of the handoff criterion. It is the handoff criterion written as a number between zero and one, so that it can be multiplied across rungs and turned into a waiting time.</p>
+  </div>
+  <div class="grid g-side-r" style="margin-top:18px">
+    <div>
+      <div class="fig">
+        <div class="fig-head">
+          <div><h2>Figure H1. The diagonal</h2><p class="sub">At the working temperature, not at 25 C</p></div>
+          <div class="fig-tools" data-fig="damkohler">
+            <button class="btn sm" data-dl="svg">SVG</button>
+            <button class="btn sm" data-dl="png">PNG</button>
+          </div>
+        </div>
+        <div class="fig-body" id="figDamkohler"></div>
+        <p class="fig-cap">Bars are the reported low to high range, corrected for temperature. Because transfer and loss have different activation energies, cooling moves the two coordinates by different amounts, so points migrate across the diagonal rather than sliding along it.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Temperature</h2>
+      <div id="handoffTempField"></div>
+      <h3>Activation energies</h3>
+      <div id="handoffEaFields"></div>
+      <div class="note" style="margin-top:12px" id="eaDerivation"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h2>Every handoff at the current temperature</h2>
+    <p class="sub">Click a row to highlight it on the figure and read its sources</p>
+    <div class="tbl-wrap"><table class="data" id="tblHandoffs"></table></div>
+    <div id="handoffDetail" style="margin-top:14px"></div>
+  </div>
+</section>
+
+<!-- ============ 4. LADDER ============ -->
+<section class="view" id="v-ladder">
+  <div class="fig">
+    <div class="fig-head">
+      <div><h2>Figure L1. The ladder, S0 to S6</h2><p class="sub">With the probability the model currently assigns to each rung</p></div>
+      <div class="fig-tools" data-fig="ladder">
+        <button class="btn sm" data-dl="svg">SVG</button>
+        <button class="btn sm" data-dl="png">PNG</button>
+      </div>
+    </div>
+    <div class="fig-body" id="figLadder"></div>
+    <p class="fig-cap">S0 to S3 are filters: they change what is present without any copying, inheritance or competition between variants. S4 and S5 are selection proper. S6 is new in this model and is drawn with a dashed border because it happens after LUCA and does not consume the budget.</p>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>Choose which handoff stands in for each rung</h2>
+    <p class="sub">The default assignment is a judgement, so it is exposed rather than buried</p>
+    <div id="rungAssign"></div>
+  </div>
+
+  <div class="fig" style="margin-top:18px">
+    <div class="fig-head">
+      <div><h2>Figure L2. Elemental passage matrix</h2><p class="sub">Including the new preservation column</p></div>
+      <div class="fig-tools" data-fig="matrix">
+        <button class="btn sm" data-dl="svg">SVG</button>
+        <button class="btn sm" data-dl="png">PNG</button>
+      </div>
+    </div>
+    <div class="fig-body" id="figMatrix"></div>
+  </div>
+
+  <div class="grid g-side-r" style="margin-top:18px">
+    <div class="card">
+      <h2>Elements of interest</h2>
+      <p class="sub">Click an element for its hardest rung, its preservation grade and its sources</p>
+      <div class="tbl-wrap"><table class="data" id="tblElements"></table></div>
+    </div>
+    <div class="card">
+      <h2>Element detail</h2>
+      <div id="elementDetail"><p class="empty">Select an element.</p></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>Elements do not run the ladder on separate tracks</h2>
+    <p class="sub">Couplings between elements, which is why one element can block another</p>
+    <div class="tbl-wrap"><table class="data" id="tblCouplings"></table></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>Named molecules, from source rock to conserved biochemistry</h2>
+    <p class="sub">The same ladder read as concrete species rather than element letters</p>
+    <div id="chains"></div>
+  </div>
+</section>
+
+<!-- ============ 5. PRESERVATION ============ -->
+<section class="view" id="v-preservation">
+  <div class="card">
+    <h2 id="s6Title">S6, the preservation rung</h2>
+    <p class="sub">New in this model. It filters the evidence, not the life.</p>
+    <p class="lede" id="s6Lede"></p>
+  </div>
+
+  <div class="grid g-2" style="margin-top:18px">
+    <div class="card">
+      <h2>S6a. Ecosystem persistence</h2>
+      <p class="sub">LUCA was not alone, so a single lineage is not enough</p>
+      <p class="lede" id="s6aReading" style="font-size:14px"></p>
+      <div id="s6aFields" style="margin-top:14px"></div>
+      <div class="kpis" id="s6aKpis" style="margin-top:14px"></div>
+    </div>
+    <div class="card">
+      <h2>S6b. Rock-record preservation</h2>
+      <p class="sub">Survive burial, or leave nothing to measure</p>
+      <p class="lede" id="s6bReading" style="font-size:14px"></p>
+      <div id="s6bFields" style="margin-top:14px"></div>
+      <div class="kpis" id="s6bKpis" style="margin-top:14px"></div>
+    </div>
+  </div>
+
+  <div class="fig" style="margin-top:18px">
+    <div class="fig-head">
+      <div><h2>Figure P1. Survival against burial temperature</h2><p class="sub">Only classes above the dashed line can be read out of a rock that age</p></div>
+      <div class="fig-tools" data-fig="preservation">
+        <button class="btn sm" data-dl="svg">SVG</button>
+        <button class="btn sm" data-dl="png">PNG</button>
+      </div>
+    </div>
+    <div class="fig-body" id="figPreservation"></div>
+    <p class="fig-cap">Curves are Arrhenius extrapolations from a measured half-life, which is why the activation energy for degradation matters so much. Raise it and every curve swings upward at low temperature, which is the single easiest way to fool yourself about deep-time survival. The classes with no measured half-life are listed separately rather than guessed at.</p>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>Molecule classes at the current burial temperature</h2>
+    <p class="sub">Click a row for the chemistry of why it survives or does not</p>
+    <div class="tbl-wrap"><table class="data" id="tblPreservation"></table></div>
+    <div id="presDetail" style="margin-top:14px"></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>Why biomolecules are refractory, and why earlier molecules were not</h2>
+    <p class="sub">The chemical reason the record is biased, stated in six steps</p>
+    <div id="whyRefractory"></div>
+  </div>
+</section>
+
+<!-- ============ 6. REGIMES ============ -->
+<section class="view" id="v-regimes">
+  <div class="fig">
+    <div class="fig-head">
+      <div><h2>Figure R1. Four rate-gated regimes</h2><p class="sub">Duration arrows drawn proportional to the logarithm of each regime duration</p></div>
+      <div class="fig-tools" data-fig="regimes">
+        <button class="btn sm" data-dl="svg">SVG</button>
+        <button class="btn sm" data-dl="png">PNG</button>
+      </div>
+    </div>
+    <div class="fig-body" id="figRegimes"></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>The regimes, in relation to the rungs and to the audit</h2>
+    <div class="tbl-wrap"><table class="data" id="tblRegimes"></table></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>Vocabulary</h2>
+    <p class="sub">What the unit of selection is at each level, and which rungs it can occupy</p>
+    <div class="tbl-wrap"><table class="data" id="tblVocab"></table></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>The rungs themselves</h2>
+    <p class="sub">Where the material comes from, how it gets there, and what removes it on the way</p>
+    <div class="tbl-wrap"><table class="data" id="tblRungs"></table></div>
+  </div>
+
+  <div class="grid g-2" style="margin-top:18px">
+    <div class="card">
+      <h2>Cycles that drive the attempts</h2>
+      <p class="sub">The period of the chosen cycle is the denominator of the attempt rate in T3</p>
+      <div class="tbl-wrap"><table class="data" id="tblCycles"></table></div>
+    </div>
+    <div class="card">
+      <h2>Free energy currencies</h2>
+      <p class="sub">What actually pays for each transfer</p>
+      <div class="tbl-wrap"><table class="data" id="tblEnergy"></table></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>Speed classes and tiers</h2>
+    <div class="grid g-2">
+      <div><h3>Speed classes</h3><div id="speedClasses"></div></div>
+      <div><h3>Confidence tiers</h3><div id="tierDefs"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. PARAMETERS ============ -->
+<section class="view" id="v-params">
+  <div class="card">
+    <h2>Every parameter in the model</h2>
+    <p class="sub">Value, plausible range, confidence tier and where the number comes from</p>
+    <div class="field" style="max-width:520px">
+      <label><span class="flabel">Range limits</span></label>
+      <div class="seg" id="rangeSeg">
+        <button data-v="plausible" aria-pressed="true">Keep me inside plausible values</button>
+        <button data-v="wide" aria-pressed="false">Let me use unreasonable values</button>
+      </div>
+      <div class="hint">Unreasonable values are allowed on purpose, because seeing what it takes to break a conclusion is more informative than seeing it hold. Anything outside the plausible range is flagged in red.</div>
+    </div>
+    <div id="paramPanels" style="margin-top:18px"></div>
+    <div class="btn-row" style="margin-top:18px">
+      <button class="btn" id="resetParams">Reset every parameter to its default</button>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>Cooling curve anchors</h2>
+    <p class="sub">Tier C. Edit these and the temperature route to the near end moves with them.</p>
+    <div class="tbl-wrap"><table class="data" id="tblAnchors"></table></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>Measurement gaps</h2>
+    <p class="sub">What is not known, and what would settle it</p>
+    <div class="tbl-wrap"><table class="data" id="tblGaps"></table></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>Predictions the model can be broken by</h2>
+    <div class="tbl-wrap"><table class="data" id="tblPredictions"></table></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>References</h2>
+    <p class="sub"><span id="refCount"></span> sources. Filter by figure, tier or text.</p>
+    <div class="grid g-2" style="margin-bottom:12px">
+      <div class="field"><label><span class="flabel">Search</span></label><input type="text" id="refSearch" placeholder="author, topic or URL"></div>
+      <div class="field"><label><span class="flabel">Used in</span></label><select id="refFilter"></select></div>
+    </div>
+    <div class="tbl-wrap"><table class="data" id="tblRefs"></table></div>
+  </div>
+</section>
+
+<!-- ============ 8. EXPORT ============ -->
+<section class="view" id="v-export">
+  <div class="grid g-2">
+    <div class="card">
+      <h2>Export this run</h2>
+      <p class="sub">Everything on screen, in a form you can keep or reopen</p>
+      <h3>Figures</h3>
+      <div class="btn-row" id="exportFigs"></div>
+      <div class="hint" style="margin-top:6px">SVG is vector and editable in Illustrator or Inkscape, so it is the format to use for the manuscript. PNG is rendered at twice the on-screen size.</div>
+      <h3>Data</h3>
+      <div class="btn-row">
+        <button class="btn" id="expAuditCsv">Audit table, CSV</button>
+        <button class="btn" id="expHandoffCsv">Handoffs at this temperature, CSV</button>
+        <button class="btn" id="expMatrixCsv">Element matrix, CSV</button>
+        <button class="btn" id="expPresCsv">Preservation table, CSV</button>
+      </div>
+      <h3>Reproducibility</h3>
+      <div class="btn-row">
+        <button class="btn primary" id="expState">Parameter state, JSON</button>
+        <button class="btn" id="expModel">Full model data, JSON</button>
+        <button class="btn" id="expReport">Written summary of this run, Markdown</button>
+      </div>
+      <div class="hint" style="margin-top:6px">The parameter state file is small and reopens this exact run. The full model file is the complete dataset, which is what you edit to add new material.</div>
+    </div>
+
+    <div class="card">
+      <h2>Add new material</h2>
+      <p class="sub">Elements, handoffs and references, as new papers come in</p>
+      <p class="lede" style="font-size:14px">The model reads one JSON file, so extending it does not mean editing the app. Export the full model data, add your entries to the array you want to grow, then load the file back in here. Nothing is overwritten unless an entry has an id that already exists.</p>
+      <div class="field" style="margin-top:14px">
+        <label><span class="flabel">Load a model or state file</span></label>
+        <input type="file" id="importFile" accept=".json,application/json">
+        <div class="hint">A file with a <code>parameters</code> key is read as a saved run. A file with <code>elements</code>, <code>handoffs</code> or <code>references</code> is merged into the dataset.</div>
+      </div>
+      <div id="importReport"></div>
+      <h3>The shape to follow</h3>
+      <div class="tbl-wrap"><table class="data" id="tblSchema"></table></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h2>How every number here is produced</h2>
+    <div id="methodText"></div>
+  </div>
+</section>
+
+<p class="foot" id="footNote"></p>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script type="module" src="js/main.js"></script>
+<script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://perplexity.localhost","http://localhost:1420","http://127.0.0.1:1420","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  const DEFAULT_LINE_HEIGHT = 16;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_BY") {
+      const { deltaX, deltaY, deltaMode } = event.data;
+      if (!scrollForwarding || !Number.isFinite(deltaX) || !Number.isFinite(deltaY)) return;
+      if (deltaMode !== 0 && deltaMode !== 1 && deltaMode !== 2) return;
+      const lineHeight =
+        parseFloat(getComputedStyle(document.documentElement).lineHeight) || DEFAULT_LINE_HEIGHT;
+      const scaleX = deltaMode === 1 ? lineHeight : deltaMode === 2 ? window.innerWidth : 1;
+      const scaleY = deltaMode === 1 ? lineHeight : deltaMode === 2 ? window.innerHeight : 1;
+      // The selection overlay receives the wheel event instead of this iframe.
+      // Instant scrolling preserves trackpad deltas even on smooth-scroll sites.
+      window.scrollBy({ left: deltaX * scaleX, top: deltaY * scaleY, behavior: "instant" });
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+</script></body>
+</html>
